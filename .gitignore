@@ -27,3 +27,7 @@ hs_err_pid*
 # JRebel
 rebel.xml
 
+# IDEA
+.idea
+*.iml
+/target
