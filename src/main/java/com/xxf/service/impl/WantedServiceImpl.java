@@ -36,7 +36,8 @@ public class WantedServiceImpl implements WantedService {
 
     @Override
     public DetailVO getDetail(int id) {
-        return wantedMapper.selectOne(id);
+        return null;
+//        return wantedMapper.selectOne(id);
     }
 
     @Override
