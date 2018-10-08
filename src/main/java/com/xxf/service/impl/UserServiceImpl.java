@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -25,9 +26,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getUserDetails(int id) {
+        return userMapper.selectOne(id);
+    }
+
+    @Override
+    public boolean newUser(User user) {
+        int result = userMapper.insert(user);
+        return result == 1;
+    }
+
+    @Override
     public List<Wanted> getAllWantedByUserId(int id) {
-
-
-        return null;
+        List<Integer> records = userMapper.selectFromRecord(id);
+        return records.stream().map(wantedId -> wantedMapper.selectOne(wantedId))
+                .collect(Collectors.toList());
     }
 }

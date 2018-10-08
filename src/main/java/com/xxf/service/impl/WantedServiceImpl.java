@@ -1,6 +1,7 @@
 package com.xxf.service.impl;
 
 import com.xxf.entity.DetailVO;
+import com.xxf.entity.User;
 import com.xxf.entity.Wanted;
 import com.xxf.entity.WantedVO;
 import com.xxf.mapper.UserMapper;
@@ -36,17 +37,19 @@ public class WantedServiceImpl implements WantedService {
 
     @Override
     public DetailVO getDetail(int id) {
-        return null;
-//        return wantedMapper.selectOne(id);
+        Wanted wanted = wantedMapper.selectOne(id);
+        int userId = wantedMapper.selectFromRecord(id);
+        User user = userMapper.selectOne(userId);
+        return new DetailVO(wanted, user);
     }
 
     @Override
-    public int addNewWanted(Wanted wanted) {
-        return wantedMapper.insert(wanted);
+    public boolean addNewWanted(Wanted wanted) {
+        return wantedMapper.insert(wanted) == 1;
     }
 
     @Override
-    public int changeWantedStatus(int id, int taked) {
-        return wantedMapper.update(id, taked);
+    public boolean changeWantedStatus(int id, int taked) {
+        return wantedMapper.update(id, taked) == 1;
     }
 }

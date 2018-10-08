@@ -21,4 +21,7 @@ public interface UserMapper {
 
     @Insert({"insert into user(openId, register_time, nickname, position, phone, wechat) values(#{openId}, #{registerTime}, #{nickname}, #{position}, #{phone}, #{wechat})"})
     int insert(User user);
+
+    @Select({"select r.wantedId from record r where userId = #{id}"})
+    List<Integer> selectFromRecord(@Param("id") int id);
 }

@@ -9,15 +9,32 @@ public interface UserService {
 
     /**
      * 所有用户列表
+     *
      * @return
      */
     List<User> listAllUsers();
 
     /**
+     * 用户详情
+     *
+     * @param id
+     * @return
+     */
+    User getUserDetails(int id);
+
+    /**
+     * 新增用户
+     *
+     * @param user
+     * @return
+     */
+    boolean newUser(User user);
+
+    /**
      * 根据用户id查询该用户的所有订单
+     *
      * @param id
      * @return
      */
     List<Wanted> getAllWantedByUserId(int id);
-
 }
