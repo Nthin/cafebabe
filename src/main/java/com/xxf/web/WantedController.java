@@ -37,8 +37,8 @@ public class WantedController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(value = "/add", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
-    public boolean addNewWanted(@RequestBody Wanted wanted) {
-        return wantedService.addNewWanted(wanted);
+    public boolean addNewWanted(@RequestBody Wanted wanted, @RequestParam("userId") int userId) {
+        return wantedService.addNewWanted(wanted, userId);
     }
 
     @ResponseStatus(HttpStatus.OK)

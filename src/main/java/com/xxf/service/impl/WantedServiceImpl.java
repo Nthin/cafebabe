@@ -10,6 +10,7 @@ import com.xxf.mapper.WantedVOMapper;
 import com.xxf.service.WantedService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -43,9 +44,16 @@ public class WantedServiceImpl implements WantedService {
         return new DetailVO(wanted, user);
     }
 
+    @Transactional(rollbackFor = RuntimeException.class)
     @Override
-    public boolean addNewWanted(Wanted wanted) {
-        return wantedMapper.insert(wanted) == 1;
+    public boolean addNewWanted(Wanted wanted, int userId) {
+        if (wantedMapper.insert(wanted) != 1) {
+            throw new RuntimeException("insert into wanted fail");
+        }
+        if (wantedMapper.insertRecord(wanted.getId(), userId) != 1) {
+            throw new RuntimeException("insert into record fail");
+        }
+        return true;
     }
 
     @Override

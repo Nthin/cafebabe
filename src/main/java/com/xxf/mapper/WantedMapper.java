@@ -26,7 +26,11 @@ public interface WantedMapper {
     Wanted selectOne(@Param("id") int id);
 
     @Insert({"insert into wanted(size, taste, start_time, end_time, price_low, price_high) values(#{size}, #{taste}, #{startTime}, #{endTime}, #{priceLow}, #{priceHigh})"})
+    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     int insert(Wanted wanted);
+
+    @Insert({"insert into record(wantedId, userId) values(#{wantedId}, #{userId})"})
+    int insertRecord(@Param("wantedId") int wantedId, @Param("userId") int userId);
 
     @Update({"update wanted set taked = #{taked} where id = #{id}"})
     int update(@Param("id") int id, @Param("taked") int taked);
