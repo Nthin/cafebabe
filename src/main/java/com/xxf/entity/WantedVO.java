@@ -11,4 +11,6 @@ public class WantedVO {
 
     private String position;
 
+    private String avatarUrl;
+
 }

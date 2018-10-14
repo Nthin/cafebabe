@@ -124,6 +124,7 @@
             <artifactId>druid</artifactId>
             <version>1.0.18</version>
         </dependency>
+        <!--
         <dependency>
             <groupId>com.squareup.retrofit2</groupId>
             <artifactId>retrofit</artifactId>
@@ -134,6 +135,7 @@
             <artifactId>converter-jackson</artifactId>
             <version>2.4.0</version>
         </dependency>
+        -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>

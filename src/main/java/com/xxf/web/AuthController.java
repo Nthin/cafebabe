@@ -1,6 +1,6 @@
 package com.xxf.web;
 
-import com.xxf.entity.auth.AuthResponse;
+import com.xxf.entity.auth.AuthCode;
 import com.xxf.service.AuthService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +16,11 @@ public class AuthController {
     private AuthService authService;
 
     @ResponseStatus(HttpStatus.OK)
-    @RequestMapping(value = "/{code}", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
-    public AuthResponse listWanted(@PathVariable("code") String code) {
-        AuthResponse response = authService.getAuthValue(code);
-        log.info("response is {}", response);
-        return response;
+    @RequestMapping(value = "", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
+    public AuthCode getAuthCode() {
+        AuthCode authCode = authService.getAuthValue();
+        log.info("response is {}", authCode);
+        return authCode;
     }
 
 }

@@ -17,9 +17,9 @@ public class UserController {
     private UserService userService;
 
     @ResponseStatus(HttpStatus.OK)
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
-    public User getUserInfo(@PathVariable("id") int id) {
-        return userService.getUserDetails(id);
+    @RequestMapping(value = "/{openId}", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
+    public User getUserInfo(@PathVariable("openId") String openId) {
+        return userService.getUserDetails(openId);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
@@ -34,4 +34,5 @@ public class UserController {
         return userService.getAllWantedByUserId(id);
     }
 
+    // TODO: 2018/10/15 补全用户信息（position、phone、wechat） 
 }

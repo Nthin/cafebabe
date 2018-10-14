@@ -26,8 +26,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserDetails(int id) {
-        return userMapper.selectOne(id);
+    public User getUserDetails(String openId) {
+        return userMapper.selectOne(openId);
     }
 
     @Override

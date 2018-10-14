@@ -13,13 +13,19 @@ public interface UserMapper {
     })
     List<User> selectAll();
 
+    @Select({"select * from user where openId = #{openId}"})
+    @Results({
+            @Result(property = "registerTime", column = "register_time")
+    })
+    User selectOne(@Param("openId") String openId);
+
     @Select({"select * from user where id = #{id}"})
     @Results({
             @Result(property = "registerTime", column = "register_time")
     })
-    User selectOne(@Param("id") int id);
+    User selectOneById(@Param("id") int id);
 
-    @Insert({"insert into user(openId, register_time, nickname, position, phone, wechat) values(#{openId}, #{registerTime}, #{nickname}, #{position}, #{phone}, #{wechat})"})
+    @Insert({"insert into user(openId, register_time, nickname, avatarUrl) values(#{openId}, #{registerTime}, #{nickname}, #{avatarUrl})"})
     int insert(User user);
 
     @Select({"select r.wantedId from record r where userId = #{id}"})

@@ -1,7 +1,7 @@
 package com.xxf.service;
 
-import com.xxf.entity.auth.AuthResponse;
+import com.xxf.entity.auth.AuthCode;
 
 public interface AuthService {
-    AuthResponse getAuthValue(String code);
+    AuthCode getAuthValue();
 }

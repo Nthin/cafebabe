@@ -17,10 +17,10 @@ public interface UserService {
     /**
      * 用户详情
      *
-     * @param id
+     * @param openId
      * @return
      */
-    User getUserDetails(int id);
+    User getUserDetails(String openId);
 
     /**
      * 新增用户

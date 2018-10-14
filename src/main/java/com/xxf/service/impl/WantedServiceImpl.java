@@ -40,7 +40,7 @@ public class WantedServiceImpl implements WantedService {
     public DetailVO getDetail(int id) {
         Wanted wanted = wantedMapper.selectOne(id);
         int userId = wantedMapper.selectFromRecord(id);
-        User user = userMapper.selectOne(userId);
+        User user = userMapper.selectOneById(userId);
         return new DetailVO(wanted, user);
     }
 
