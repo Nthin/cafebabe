@@ -37,4 +37,6 @@ public interface UserService {
      * @return
      */
     List<Wanted> getAllWantedByUserId(int id);
+
+    boolean updateUser(int id, String position, String phone, String wechat);
 }

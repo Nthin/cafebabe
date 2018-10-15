@@ -18,9 +18,7 @@ public class AuthController {
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(value = "", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
     public AuthCode getAuthCode() {
-        AuthCode authCode = authService.getAuthValue();
-        log.info("response is {}", authCode);
-        return authCode;
+        return authService.getAuthValue();
     }
 
 }

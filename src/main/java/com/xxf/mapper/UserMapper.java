@@ -30,4 +30,7 @@ public interface UserMapper {
 
     @Select({"select r.wantedId from record r where userId = #{id}"})
     List<Integer> selectFromRecord(@Param("id") int id);
+
+    @Update({"update user u set u.position = #{position}, u.phone = #{phone}, u.wechat = #{wechat} where u.id = #{id}"})
+    int update(@Param("id") int id, @Param("position") String position, @Param("phone") String phone, @Param("wechat") String wechat);
 }

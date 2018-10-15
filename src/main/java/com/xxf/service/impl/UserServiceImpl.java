@@ -42,4 +42,9 @@ public class UserServiceImpl implements UserService {
         return records.stream().map(wantedId -> wantedMapper.selectOne(wantedId))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public boolean updateUser(int id, String position, String phone, String wechat) {
+        return userMapper.update(id, position, phone, wechat) == 1;
+    }
 }

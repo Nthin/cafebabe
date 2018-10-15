@@ -34,5 +34,9 @@ public class UserController {
         return userService.getAllWantedByUserId(id);
     }
 
-    // TODO: 2018/10/15 补全用户信息（position、phone、wechat） 
+    @ResponseStatus(HttpStatus.OK)
+    @RequestMapping(value = "/{id}/complete", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
+    public boolean completeUserInfo(@PathVariable("id") int id, @RequestParam("position") String position, @RequestParam("phone") String phone, @RequestParam("wechat") String wechat) {
+        return userService.updateUser(id, position, phone, wechat);
+    }
 }
