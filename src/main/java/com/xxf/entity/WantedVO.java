@@ -7,6 +7,8 @@ public class WantedVO {
 
     private int id;
 
+    private int brand;
+
     private String nickname;
 
     private String position;

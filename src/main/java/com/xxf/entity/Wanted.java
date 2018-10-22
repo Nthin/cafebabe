@@ -10,6 +10,8 @@ public class Wanted {
 
     private int id;
 
+    private int brand;
+
     private int size;
 
     private String taste;
