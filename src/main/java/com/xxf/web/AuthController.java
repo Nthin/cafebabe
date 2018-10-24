@@ -18,9 +18,12 @@ public class AuthController {
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(value = "/{code}", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
     public AuthResponse listWanted(@PathVariable("code") String code) {
-        AuthResponse response = authService.getAuthValue(code);
-        log.info("response: {}", response);
-        return response;
+        try {
+            return authService.login(code);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return null;
     }
 
 }
