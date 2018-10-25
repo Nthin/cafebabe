@@ -62,7 +62,7 @@ public class AuthServiceImpl implements AuthService {
 
     private void newUserIfNotExist(@NonNull String openId) {
         if (userMapper.selectOne(openId) == null) {
-            userMapper.insert(new User(openId));
+//            userMapper.insert(new User(openId));
         }
     }
 

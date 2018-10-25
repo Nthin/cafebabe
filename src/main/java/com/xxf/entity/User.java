@@ -25,8 +25,4 @@ public class User {
 
     private String avatarUrl;
 
-    public User (String openId) {
-        this.openId = openId;
-    }
-
 }

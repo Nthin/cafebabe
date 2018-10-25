@@ -37,6 +37,11 @@ public class WantedServiceImpl implements WantedService {
     }
 
     @Override
+    public List<WantedVO> listUntakedByBrand(int brand) {
+        return wantedVOMapper.selectUntakedByBrand(brand);
+    }
+
+    @Override
     public DetailVO getDetail(int id) {
         Wanted wanted = wantedMapper.selectOne(id);
         int userId = wantedMapper.selectFromRecord(id);

@@ -30,6 +30,15 @@ public class WantedController {
     }
 
     @ResponseStatus(HttpStatus.OK)
+    @RequestMapping(value = "/untaked", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
+    public List<WantedVO> listUntakedByBrand(@RequestParam("brand") int brand) {
+        if (brand == 0) {
+            return listUntaked();
+        }
+        return wantedService.listUntakedByBrand(brand);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
     public DetailVO getDetail(@PathVariable("id") int id) {
         return wantedService.getDetail(id);

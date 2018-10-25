@@ -23,6 +23,13 @@ public interface WantedService {
     List<WantedVO> listAllUntaked();
 
     /**
+     * 根据品牌筛选可用记录
+     * @param brand
+     * @return
+     */
+    List<WantedVO> listUntakedByBrand(int brand);
+
+    /**
      * 查询某一条记录的所有信息
      *
      * @param id
