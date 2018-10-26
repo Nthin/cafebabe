@@ -43,7 +43,7 @@ public interface WantedService {
      * @param wanted
      * @return
      */
-    boolean addNewWanted(Wanted wanted, int userId);
+    void addNewWanted(int userId, Wanted wanted);
 
     /**
      * 下订单
@@ -52,5 +52,5 @@ public interface WantedService {
      * @param taked
      * @return
      */
-    boolean changeWantedStatus(int id, int taked);
+    void changeWantedStatus(int id, int taked);
 }

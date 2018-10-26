@@ -33,7 +33,7 @@ public class AuthResponse {
     /**
      * 错误信息
      */
-    @JsonProperty("errMsg")
+    @JsonProperty("errmsg")
     private String errMsg;
 
 }

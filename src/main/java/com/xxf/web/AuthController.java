@@ -1,5 +1,6 @@
 package com.xxf.web;
 
+import com.xxf.entity.Result;
 import com.xxf.entity.auth.AuthResponse;
 import com.xxf.service.AuthService;
 import lombok.extern.slf4j.Slf4j;
@@ -16,14 +17,9 @@ public class AuthController {
     private AuthService authService;
 
     @ResponseStatus(HttpStatus.OK)
-    @RequestMapping(value = "/{code}", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
-    public AuthResponse listWanted(@PathVariable("code") String code) {
-        try {
-            return authService.login(code);
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-        }
-        return null;
+    @GetMapping(value = "/{code}")
+    public Result login(@PathVariable("code") String code) {
+        return new Result(authService.login(code));
     }
 
 }

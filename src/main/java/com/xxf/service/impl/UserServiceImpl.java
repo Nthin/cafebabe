@@ -1,5 +1,6 @@
 package com.xxf.service.impl;
 
+import com.xxf.entity.CafeException;
 import com.xxf.entity.User;
 import com.xxf.entity.Wanted;
 import com.xxf.mapper.UserMapper;
@@ -31,9 +32,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean newUser(User user) {
+    public void newUser(User user) {
         int result = userMapper.insert(user);
-        return result == 1;
+        if (result != 1) {
+            throw new CafeException(400, "Failed to create new user : " + user);
+        }
     }
 
     @Override
@@ -44,7 +47,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean updateUser(int id, String position, String phone, String wechat) {
-        return userMapper.update(id, position, phone, wechat) == 1;
+    public void updateUser(int id, String position, String phone, String wechat) {
+        int result = userMapper.update(id, position, phone, wechat);
+        if (result != 1) {
+            throw new CafeException(400, "Failed to update user : " + id);
+        }
     }
 }

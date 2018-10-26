@@ -1,9 +1,6 @@
 package com.xxf.service.impl;
 
-import com.xxf.entity.DetailVO;
-import com.xxf.entity.User;
-import com.xxf.entity.Wanted;
-import com.xxf.entity.WantedVO;
+import com.xxf.entity.*;
 import com.xxf.mapper.UserMapper;
 import com.xxf.mapper.WantedMapper;
 import com.xxf.mapper.WantedVOMapper;
@@ -49,20 +46,21 @@ public class WantedServiceImpl implements WantedService {
         return new DetailVO(wanted, user);
     }
 
-    @Transactional(rollbackFor = RuntimeException.class)
+    @Transactional(rollbackFor = CafeException.class)
     @Override
-    public boolean addNewWanted(Wanted wanted, int userId) {
+    public void addNewWanted(int userId, Wanted wanted) {
         if (wantedMapper.insert(wanted) != 1) {
-            throw new RuntimeException("insert into wanted fail");
+            throw new CafeException(400, "insert into wanted fail, wanted : " + wanted + ", userId : " + userId);
         }
         if (wantedMapper.insertRecord(wanted.getId(), userId) != 1) {
-            throw new RuntimeException("insert into record fail");
+            throw new CafeException(400, "insert into record fail, wanted : " + wanted + ", userId : " + userId);
         }
-        return true;
     }
 
     @Override
-    public boolean changeWantedStatus(int id, int taked) {
-        return wantedMapper.update(id, taked) == 1;
+    public void changeWantedStatus(int id, int taked) {
+        if (wantedMapper.update(id, taked) != 1) {
+            throw new CafeException(400, "change wanted status fail, id : " + id);
+        }
     }
 }

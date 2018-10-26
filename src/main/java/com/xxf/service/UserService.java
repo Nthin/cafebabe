@@ -28,7 +28,7 @@ public interface UserService {
      * @param user
      * @return
      */
-    boolean newUser(User user);
+    void newUser(User user);
 
     /**
      * 根据用户id查询该用户的所有订单
@@ -38,5 +38,5 @@ public interface UserService {
      */
     List<Wanted> getAllWantedByUserId(int id);
 
-    boolean updateUser(int id, String position, String phone, String wechat);
+    void updateUser(int id, String position, String phone, String wechat);
 }

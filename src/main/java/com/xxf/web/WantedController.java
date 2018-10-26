@@ -1,6 +1,7 @@
 package com.xxf.web;
 
 import com.xxf.entity.DetailVO;
+import com.xxf.entity.Result;
 import com.xxf.entity.Wanted;
 import com.xxf.entity.WantedVO;
 import com.xxf.service.WantedService;
@@ -18,41 +19,40 @@ public class WantedController {
     private WantedService wantedService;
 
     @ResponseStatus(HttpStatus.OK)
-    @RequestMapping(value = "/all", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
-    public List<Wanted> listWanted() {
-        return wantedService.listAllWanted();
+    @GetMapping(value = "")
+    public Result listWanted() {
+        List<Wanted> wantedList = wantedService.listAllWanted();
+        return new Result(wantedList);
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @RequestMapping(value = "/untaked", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
-    public List<WantedVO> listUntaked() {
-        return wantedService.listAllUntaked();
+    @GetMapping(value = "/untaked")
+    public Result listUntaked() {
+        List<WantedVO> wantedVOList = wantedService.listAllUntaked();
+        return new Result(wantedVOList);
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @RequestMapping(value = "/untaked", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
-    public List<WantedVO> listUntakedByBrand(@RequestParam("brand") int brand) {
+    @GetMapping(value = "/{brand}/untaked")
+    public Result listUntakedByBrand(@PathVariable("brand") int brand) {
         if (brand == 0) {
             return listUntaked();
         }
-        return wantedService.listUntakedByBrand(brand);
+        List<WantedVO> wantedVOList = wantedService.listUntakedByBrand(brand);
+        return new Result(wantedVOList);
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
-    public DetailVO getDetail(@PathVariable("id") int id) {
-        return wantedService.getDetail(id);
+    @GetMapping(value = "/{id}")
+    public Result getDetail(@PathVariable("id") int id) {
+        DetailVO detailVO = wantedService.getDetail(id);
+        return new Result(detailVO);
     }
 
-    @ResponseStatus(HttpStatus.CREATED)
-    @RequestMapping(value = "/add", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
-    public boolean addNewWanted(@RequestBody Wanted wanted, @RequestParam("userId") int userId) {
-        return wantedService.addNewWanted(wanted, userId);
-    }
-
-    @ResponseStatus(HttpStatus.OK)
-    @RequestMapping(value = "/take/{id}", method = RequestMethod.PUT, produces = "application/json;charset=utf-8")
-    public boolean changeWantedStatus(@PathVariable("id") int id, @RequestParam("status") int taked) {
-        return wantedService.changeWantedStatus(id, taked);
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @PutMapping(value = "/{id}")
+    public Result takeWanted(@PathVariable("id") int id) {
+        wantedService.changeWantedStatus(id, 1);
+        return new Result();
     }
 }

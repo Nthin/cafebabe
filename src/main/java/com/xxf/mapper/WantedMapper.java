@@ -32,7 +32,7 @@ public interface WantedMapper {
     @Insert({"insert into record(wantedId, userId) values(#{wantedId}, #{userId})"})
     int insertRecord(@Param("wantedId") int wantedId, @Param("userId") int userId);
 
-    @Update({"updateUser wanted set taked = #{taked} where id = #{id}"})
+    @Update({"update wanted set taked = #{taked} where id = #{id}"})
     int update(@Param("id") int id, @Param("taked") int taked);
 
     @Select({"select r.userId from record r where wantedId = #{id}"})

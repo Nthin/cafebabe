@@ -2,7 +2,6 @@ package com.xxf.service.impl;
 
 import com.xxf.client.AuthClient;
 import com.xxf.entity.CafeException;
-import com.xxf.entity.User;
 import com.xxf.entity.auth.AuthCode;
 import com.xxf.entity.auth.AuthResponse;
 import com.xxf.mapper.AuthMapper;
@@ -34,6 +33,9 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public AuthResponse login(String code) {
         AuthResponse resp = getAuthResp(code);
+        if (resp.getOpenId() == null) {
+            throw new CafeException(400, "getAuthResp fail, openId is null");
+        }
 //        newUserIfNotExist(resp.getOpenId());
         return resp;
     }
@@ -49,13 +51,13 @@ public class AuthServiceImpl implements AuthService {
         try {
             resp = authClient.getResponse(authCode.getAppId(), authCode.getAppSecret(), code, GRANT_TYPE).execute().body();
             if (resp == null) {
-                throw new CafeException("getAuthResp fail, resp is null");
+                throw new CafeException(400, "getAuthResp fail, resp is null");
             }
             if (resp.getErrCode() != 0) {
                 throw new CafeException(resp.getErrCode(), resp.getErrMsg());
             }
         } catch (IOException e) {
-            throw new CafeException(e);
+            throw new CafeException(400, e);
         }
         return resp;
     }
@@ -68,8 +70,12 @@ public class AuthServiceImpl implements AuthService {
 
     private String generate3rdSession(String openId, String sessionKey) {
         String thirdSessionKey = RandomStringUtils.randomAlphanumeric(64);
-        StringBuffer sb = new StringBuffer();
-        sb.append(sessionKey).append("#").append(openId);
+        StringBuilder sb = new StringBuilder();
+        try {
+            sb.append(sessionKey).append("#").append(openId);
+        } finally {
+            sb.delete(0, sb.length());
+        }
         return thirdSessionKey;
     }
 }
