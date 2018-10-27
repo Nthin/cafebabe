@@ -57,6 +57,6 @@ public class WantedController {
     @PutMapping(value = "/{id}")
     public Result takeWanted(@PathVariable("id") int id) {
         wantedService.changeWantedStatus(id, 1);
-        return new Result();
+        return new Result(HttpStatus.CREATED.value());
     }
 }

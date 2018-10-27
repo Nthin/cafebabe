@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Slf4j
 public class GlobalExceptionHandler {
 
-    private static final int DEFAULT_ERROR_CODE = 400;
-
     public GlobalExceptionHandler() {
 
     }
@@ -31,6 +29,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({Exception.class})
     public Result otherExceptionHandler(Exception e) {
         log.error(e.getMessage(), e);
-        return new Result(DEFAULT_ERROR_CODE, e.getMessage());
+        return new Result(HttpStatus.BAD_REQUEST.value(), e.getMessage());
     }
 }

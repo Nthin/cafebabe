@@ -38,5 +38,12 @@ public interface UserService {
      */
     List<Wanted> getAllWantedByUserId(int id);
 
+    /**
+     * 补全用户资料
+     * @param id
+     * @param position
+     * @param phone
+     * @param wechat
+     */
     void updateUser(int id, String position, String phone, String wechat);
 }

@@ -1,7 +1,6 @@
 package com.xxf.web;
 
 import com.xxf.entity.Result;
-import com.xxf.entity.auth.AuthResponse;
 import com.xxf.service.AuthService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

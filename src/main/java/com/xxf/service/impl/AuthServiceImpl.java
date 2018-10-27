@@ -38,7 +38,7 @@ public class AuthServiceImpl implements AuthService {
     public AuthResponse login(String code) {
         AuthResponse resp = getAuthResp(code);
         if (resp.getOpenId() == null) {
-            throw new CafeException(400, "getAuthResp fail, openId is null");
+            throw new CafeException("getAuthResp fail, openId is null");
         }
 //        newUserIfNotExist(resp.getOpenId());
         return resp;
@@ -55,13 +55,13 @@ public class AuthServiceImpl implements AuthService {
         try {
             resp = authClient.getResponse(authCode.getAppId(), authCode.getAppSecret(), code, GRANT_TYPE).execute().body();
             if (resp == null) {
-                throw new CafeException(400, "getAuthResp fail, resp is null");
+                throw new CafeException("getAuthResp fail, resp is null");
             }
             if (resp.getErrCode() != 0) {
                 throw new CafeException(resp.getErrCode(), resp.getErrMsg());
             }
         } catch (IOException e) {
-            throw new CafeException(400, e);
+            throw new CafeException(e);
         }
         return resp;
     }

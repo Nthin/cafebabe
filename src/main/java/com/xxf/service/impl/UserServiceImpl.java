@@ -7,6 +7,7 @@ import com.xxf.mapper.UserMapper;
 import com.xxf.mapper.WantedMapper;
 import com.xxf.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,14 +33,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserDetails(String openId) {
-        return userMapper.selectOne(openId);
+        User user = userMapper.selectOne(openId);
+        if (user == null) {
+            throw new CafeException(HttpStatus.NOT_FOUND.value(), "User not found by openId : " + openId);
+        }
+        return user;
     }
 
     @Override
     public void newUser(User user) {
         int result = userMapper.insert(user);
         if (result != 1) {
-            throw new CafeException(400, "Failed to create new user : " + user);
+            throw new CafeException("Failed to create new user : " + user);
         }
     }
 
@@ -54,7 +59,7 @@ public class UserServiceImpl implements UserService {
     public void updateUser(int id, String position, String phone, String wechat) {
         int result = userMapper.update(id, position, phone, wechat);
         if (result != 1) {
-            throw new CafeException(400, "Failed to update user : " + id);
+            throw new CafeException("Failed to update user : " + id);
         }
     }
 }

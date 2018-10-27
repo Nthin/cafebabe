@@ -1,8 +1,18 @@
 package com.xxf.entity;
 
+import org.springframework.http.HttpStatus;
+
 public class CafeException extends RuntimeException {
 
-    private int code;
+    private int code = HttpStatus.BAD_REQUEST.value();
+
+    public CafeException(String errMsg) {
+        super(errMsg);
+    }
+
+    public CafeException(Throwable e) {
+        super(e);
+    }
 
     public CafeException(int code, String errMsg) {
         super(errMsg);

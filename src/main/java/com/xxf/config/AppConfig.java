@@ -22,6 +22,11 @@ import java.io.IOException;
 public class AppConfig {
 
     @Bean
+    public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
+        return new PropertySourcesPlaceholderConfigurer();
+    }
+
+    @Bean
     public DataSource dataSource(PropertyConfig propertiesConfig) {
         DruidDataSource dataSource = new DruidDataSource();
         dataSource.setUsername(propertiesConfig.getUserName());
@@ -42,11 +47,6 @@ public class AppConfig {
     @Bean
     public PlatformTransactionManager transactionManager(DataSource dataSource) {
         return new DataSourceTransactionManager(dataSource);
-    }
-
-    @Bean
-    public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
-        return new PropertySourcesPlaceholderConfigurer();
     }
 
 }

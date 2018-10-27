@@ -24,6 +24,7 @@ public interface WantedService {
 
     /**
      * 根据品牌筛选可用记录
+     *
      * @param brand
      * @return
      */
@@ -40,6 +41,7 @@ public interface WantedService {
     /**
      * 新增记录
      *
+     * @param userId
      * @param wanted
      * @return
      */

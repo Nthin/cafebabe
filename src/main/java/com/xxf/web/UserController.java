@@ -37,7 +37,7 @@ public class UserController {
     @PostMapping(value = "")
     public Result addNewUser(@RequestBody User user) {
         userService.newUser(user);
-        return new Result();
+        return new Result(HttpStatus.CREATED.value());
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -51,20 +51,20 @@ public class UserController {
     @PostMapping(value = "/{id}")
     public Result addNewWanted(@PathVariable("id") int id, @RequestBody Wanted wanted) {
         wantedService.addNewWanted(id, wanted);
-        return new Result();
+        return new Result(HttpStatus.CREATED.value());
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PutMapping(value = "/{userId}/{wantedId}")
     public Result untakeWanted(@PathVariable("userId") int userId, @PathVariable("wantedId") int wantedId) {
         wantedService.changeWantedStatus(wantedId, 0);
-        return new Result();
+        return new Result(HttpStatus.CREATED.value());
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value = "/{id}/complete")
     public Result completeUserInfo(@PathVariable("id") int id, @RequestBody Map<String, String> body) {
         userService.updateUser(id, body.get("position"), body.get("phone"), body.get("wechat"));
-        return new Result();
+        return new Result(HttpStatus.CREATED.value());
     }
 }

@@ -5,9 +5,9 @@ import lombok.Data;
 @Data
 public class WantedVO {
 
-    private int id;
+    private Integer id;
 
-    private int brand;
+    private Integer brand;
 
     private String nickname;
 

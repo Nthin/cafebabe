@@ -3,7 +3,7 @@ package com.xxf.service.impl;
 import com.xxf.entity.*;
 import com.xxf.mapper.UserMapper;
 import com.xxf.mapper.WantedMapper;
-import com.xxf.mapper.WantedVOMapper;
+import com.xxf.mapper.WantedVoMapper;
 import com.xxf.service.WantedService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,12 +16,12 @@ public class WantedServiceImpl implements WantedService {
 
     private WantedMapper wantedMapper;
 
-    private WantedVOMapper wantedVOMapper;
+    private WantedVoMapper wantedVOMapper;
 
     private UserMapper userMapper;
 
     @Autowired
-    public WantedServiceImpl(WantedMapper wantedMapper, WantedVOMapper wantedVOMapper, UserMapper userMapper) {
+    public WantedServiceImpl(WantedMapper wantedMapper, WantedVoMapper wantedVOMapper, UserMapper userMapper) {
         this.wantedMapper = wantedMapper;
         this.wantedVOMapper = wantedVOMapper;
         this.userMapper = userMapper;
@@ -54,17 +54,17 @@ public class WantedServiceImpl implements WantedService {
     @Override
     public void addNewWanted(int userId, Wanted wanted) {
         if (wantedMapper.insert(wanted) != 1) {
-            throw new CafeException(400, "insert into wanted fail, wanted : " + wanted + ", userId : " + userId);
+            throw new CafeException("insert into wanted fail, wanted : " + wanted + ", userId : " + userId);
         }
         if (wantedMapper.insertRecord(wanted.getId(), userId) != 1) {
-            throw new CafeException(400, "insert into record fail, wanted : " + wanted + ", userId : " + userId);
+            throw new CafeException("insert into record fail, wanted : " + wanted + ", userId : " + userId);
         }
     }
 
     @Override
     public void changeWantedStatus(int id, int taked) {
         if (wantedMapper.update(id, taked) != 1) {
-            throw new CafeException(400, "change wanted status fail, id : " + id);
+            throw new CafeException("change wanted status fail, id : " + id);
         }
     }
 }
