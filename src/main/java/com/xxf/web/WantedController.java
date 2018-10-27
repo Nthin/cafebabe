@@ -15,8 +15,12 @@ import java.util.List;
 @RequestMapping("/wanted")
 public class WantedController {
 
-    @Autowired
     private WantedService wantedService;
+
+    @Autowired
+    public WantedController(WantedService wantedService) {
+        this.wantedService = wantedService;
+    }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "")
@@ -49,7 +53,7 @@ public class WantedController {
         return new Result(detailVO);
     }
 
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseStatus(HttpStatus.CREATED)
     @PutMapping(value = "/{id}")
     public Result takeWanted(@PathVariable("id") int id) {
         wantedService.changeWantedStatus(id, 1);

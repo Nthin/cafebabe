@@ -14,14 +14,18 @@ import java.util.List;
 @Service
 public class WantedServiceImpl implements WantedService {
 
-    @Autowired
     private WantedMapper wantedMapper;
 
-    @Autowired
     private WantedVOMapper wantedVOMapper;
 
-    @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    public WantedServiceImpl(WantedMapper wantedMapper, WantedVOMapper wantedVOMapper, UserMapper userMapper) {
+        this.wantedMapper = wantedMapper;
+        this.wantedVOMapper = wantedVOMapper;
+        this.userMapper = userMapper;
+    }
 
     @Override
     public List<Wanted> listAllWanted() {

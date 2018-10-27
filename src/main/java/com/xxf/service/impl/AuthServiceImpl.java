@@ -24,11 +24,15 @@ public class AuthServiceImpl implements AuthService {
     private static final String GRANT_TYPE = "authorization_code";
     private static final String AUTH_URL = "https://api.weixin.qq.com/sns/";
 
-    @Autowired
     private AuthMapper authMapper;
 
-    @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    public AuthServiceImpl(AuthMapper authMapper, UserMapper userMapper) {
+        this.authMapper = authMapper;
+        this.userMapper = userMapper;
+    }
 
     @Override
     public AuthResponse login(String code) {

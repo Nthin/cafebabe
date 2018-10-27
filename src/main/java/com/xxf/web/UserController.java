@@ -16,11 +16,15 @@ import java.util.Map;
 @RequestMapping("/user")
 public class UserController {
 
-    @Autowired
     private UserService userService;
 
-    @Autowired
     private WantedService wantedService;
+
+    @Autowired
+    public UserController(UserService userService, WantedService wantedService) {
+        this.userService = userService;
+        this.wantedService = wantedService;
+    }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/{openId}")
@@ -50,14 +54,14 @@ public class UserController {
         return new Result();
     }
 
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseStatus(HttpStatus.CREATED)
     @PutMapping(value = "/{userId}/{wantedId}")
     public Result untakeWanted(@PathVariable("userId") int userId, @PathVariable("wantedId") int wantedId) {
         wantedService.changeWantedStatus(wantedId, 0);
         return new Result();
     }
 
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value = "/{id}/complete")
     public Result completeUserInfo(@PathVariable("id") int id, @RequestBody Map<String, String> body) {
         userService.updateUser(id, body.get("position"), body.get("phone"), body.get("wechat"));

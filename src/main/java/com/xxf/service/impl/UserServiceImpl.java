@@ -15,11 +15,15 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
     private UserMapper userMapper;
 
-    @Autowired
     private WantedMapper wantedMapper;
+
+    @Autowired
+    public UserServiceImpl(UserMapper userMapper, WantedMapper wantedMapper) {
+        this.userMapper = userMapper;
+        this.wantedMapper = wantedMapper;
+    }
 
     @Override
     public List<User> listAllUsers() {
