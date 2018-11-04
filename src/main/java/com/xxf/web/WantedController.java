@@ -22,6 +22,10 @@ public class WantedController {
         this.wantedService = wantedService;
     }
 
+    /**
+     * 获取所有wanted
+     * @return
+     */
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "")
     public Result listWanted() {
@@ -29,6 +33,10 @@ public class WantedController {
         return new Result(wantedList);
     }
 
+    /**
+     * 获取所有可用wanted
+     * @return
+     */
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/untaked")
     public Result listUntaked() {
@@ -36,6 +44,11 @@ public class WantedController {
         return new Result(wantedVOList);
     }
 
+    /**
+     * 根据品牌对wanted进行筛选
+     * @param brand
+     * @return
+     */
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/{brand}/untaked")
     public Result listUntakedByBrand(@PathVariable("brand") int brand) {
@@ -46,6 +59,11 @@ public class WantedController {
         return new Result(wantedVOList);
     }
 
+    /**
+     * 获取wanted详情
+     * @param id
+     * @return
+     */
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/{id}")
     public Result getDetail(@PathVariable("id") int id) {
@@ -53,6 +71,11 @@ public class WantedController {
         return new Result(detailVO);
     }
 
+    /**
+     * 将wanted的状态改为taked
+     * @param id
+     * @return
+     */
     @ResponseStatus(HttpStatus.CREATED)
     @PutMapping(value = "/{id}")
     public Result takeWanted(@PathVariable("id") int id) {

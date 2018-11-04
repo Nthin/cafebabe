@@ -26,6 +26,11 @@ public class UserController {
         this.wantedService = wantedService;
     }
 
+    /**
+     * 根据openId获取用户信息
+     * @param openId
+     * @return
+     */
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/{openId}")
     public Result getUserInfo(@PathVariable("openId") String openId) {
@@ -33,6 +38,11 @@ public class UserController {
         return new Result(user);
     }
 
+    /**
+     * 新增用户
+     * @param user
+     * @return
+     */
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value = "")
     public Result addNewUser(@RequestBody User user) {
@@ -40,6 +50,11 @@ public class UserController {
         return new Result(HttpStatus.CREATED.value());
     }
 
+    /**
+     * 根据用户id获取该用户的所有wanted
+     * @param id
+     * @return
+     */
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/{id}/wanted")
     public Result getAllWanted(@PathVariable("id") int id) {
@@ -47,6 +62,12 @@ public class UserController {
         return new Result(wantedList);
     }
 
+    /**
+     * 新增wanted
+     * @param id
+     * @param wanted
+     * @return
+     */
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value = "/{id}")
     public Result addNewWanted(@PathVariable("id") int id, @RequestBody Wanted wanted) {
@@ -54,6 +75,12 @@ public class UserController {
         return new Result(HttpStatus.CREATED.value());
     }
 
+    /**
+     * 取消wanted的taked状态，重新释放到可用list中
+     * @param userId
+     * @param wantedId
+     * @return
+     */
     @ResponseStatus(HttpStatus.CREATED)
     @PutMapping(value = "/{userId}/{wantedId}")
     public Result untakeWanted(@PathVariable("userId") int userId, @PathVariable("wantedId") int wantedId) {
@@ -61,6 +88,12 @@ public class UserController {
         return new Result(HttpStatus.CREATED.value());
     }
 
+    /**
+     * 补全用户信息
+     * @param id
+     * @param body
+     * @return
+     */
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value = "/{id}/complete")
     public Result completeUserInfo(@PathVariable("id") int id, @RequestBody Map<String, String> body) {

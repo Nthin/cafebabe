@@ -19,6 +19,11 @@ public class AuthController {
         this.authService = authService;
     }
 
+    /**
+     * 获取openId
+     * @param code
+     * @return
+     */
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/{code}")
     public Result login(@PathVariable("code") String code) {
