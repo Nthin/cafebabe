@@ -71,6 +71,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value = "/{id}")
     public Result addNewWanted(@PathVariable("id") int id, @RequestBody Wanted wanted) {
+        System.out.println(wanted);
         wantedService.addNewWanted(id, wanted);
         return new Result(HttpStatus.CREATED.value());
     }
