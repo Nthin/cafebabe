@@ -16,15 +16,17 @@ public class Wanted {
 
     private String taste;
 
-    @JsonFormat(pattern = "MM-dd HH:mm", timezone = "GMT+8")
+    @JsonFormat(pattern = "HH:mm", timezone = "GMT+8")
     private Date startTime;
 
-    @JsonFormat(pattern = "MM-dd HH:mm", timezone = "GMT+8")
+    @JsonFormat(pattern = "HH:mm", timezone = "GMT+8")
     private Date endTime;
 
     private int priceLow;
 
     private int priceHigh;
+
+    private String address;
 
     private int taked;
 
