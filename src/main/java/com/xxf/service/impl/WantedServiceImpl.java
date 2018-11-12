@@ -3,7 +3,7 @@ package com.xxf.service.impl;
 import com.xxf.entity.*;
 import com.xxf.mapper.UserMapper;
 import com.xxf.mapper.WantedMapper;
-import com.xxf.mapper.WantedVoMapper;
+import com.xxf.mapper.WantedVOMapper;
 import com.xxf.service.WantedService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,12 +16,12 @@ public class WantedServiceImpl implements WantedService {
 
     private WantedMapper wantedMapper;
 
-    private WantedVoMapper wantedVOMapper;
+    private WantedVOMapper wantedVOMapper;
 
     private UserMapper userMapper;
 
     @Autowired
-    public WantedServiceImpl(WantedMapper wantedMapper, WantedVoMapper wantedVOMapper, UserMapper userMapper) {
+    public WantedServiceImpl(WantedMapper wantedMapper, WantedVOMapper wantedVOMapper, UserMapper userMapper) {
         this.wantedMapper = wantedMapper;
         this.wantedVOMapper = wantedVOMapper;
         this.userMapper = userMapper;
