@@ -9,9 +9,9 @@ public class WantedVO {
 
     private Integer brand;
 
-    private String nickname;
+    private String address;
 
-    private String position;
+    private String nickname;
 
     private String avatarUrl;
 

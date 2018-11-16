@@ -28,6 +28,8 @@ public class Wanted {
 
     private String address;
 
+    private String addressDetail;
+
     private int taked;
 
 }

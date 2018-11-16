@@ -12,7 +12,8 @@ public interface WantedMapper {
             @Result(property = "startTime", column = "start_time"),
             @Result(property = "endTime", column = "end_time"),
             @Result(property = "priceLow", column = "price_low"),
-            @Result(property = "priceHigh", column = "price_high")
+            @Result(property = "priceHigh", column = "price_high"),
+            @Result(property = "addressDetail", column = "address_detail")
     })
     List<Wanted> selectAll();
 
@@ -21,11 +22,12 @@ public interface WantedMapper {
             @Result(property = "startTime", column = "start_time"),
             @Result(property = "endTime", column = "end_time"),
             @Result(property = "priceLow", column = "price_low"),
-            @Result(property = "priceHigh", column = "price_high")
+            @Result(property = "priceHigh", column = "price_high"),
+            @Result(property = "addressDetail", column = "address_detail")
     })
     Wanted selectOne(@Param("id") int id);
 
-    @Insert({"insert into wanted(brand, size, taste, start_time, end_time, price_low, price_high, address) values(#{brand}, #{size}, #{taste}, #{startTime}, #{endTime}, #{priceLow}, #{priceHigh}, #{address})"})
+    @Insert({"insert into wanted(brand, size, taste, start_time, end_time, price_low, price_high, address, address_detail) values(#{brand}, #{size}, #{taste}, #{startTime}, #{endTime}, #{priceLow}, #{priceHigh}, #{address}, #{addressDetail})"})
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     int insert(Wanted wanted);
 
