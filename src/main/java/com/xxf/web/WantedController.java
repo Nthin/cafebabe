@@ -52,7 +52,7 @@ public class WantedController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/{brand}/untaked")
     public Result listUntakedByBrand(@PathVariable("brand") int brand) {
-        if (brand == 0) {
+        if (brand == -1) {
             return listUntaked();
         }
         List<WantedVO> wantedVOList = wantedService.listUntakedByBrand(brand);
