@@ -21,8 +21,6 @@ public class User {
 
     private String phone;
 
-    private String wechat;
-
     private String avatarUrl;
 
 }

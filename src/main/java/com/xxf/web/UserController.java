@@ -98,7 +98,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value = "/{id}/complete")
     public Result completeUserInfo(@PathVariable("id") int id, @RequestBody Map<String, String> body) {
-        userService.updateUser(id, body.get("position"), body.get("phone"), body.get("wechat"));
+        userService.updateUser(id, body.get("position"), body.get("phone"));
         return new Result(HttpStatus.CREATED.value());
     }
 }

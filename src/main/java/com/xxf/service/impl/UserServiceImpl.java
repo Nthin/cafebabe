@@ -56,8 +56,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(int id, String position, String phone, String wechat) {
-        int result = userMapper.update(id, position, phone, wechat);
+    public void updateUser(int id, String position, String phone) {
+        int result = userMapper.update(id, position, phone);
         if (result != 1) {
             throw new CafeException("Failed to update user : " + id);
         }

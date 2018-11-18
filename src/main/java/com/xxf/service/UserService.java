@@ -43,7 +43,6 @@ public interface UserService {
      * @param id
      * @param position
      * @param phone
-     * @param wechat
      */
-    void updateUser(int id, String position, String phone, String wechat);
+    void updateUser(int id, String position, String phone);
 }
