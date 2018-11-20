@@ -56,6 +56,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<Wanted> getAllUntakedByUserId(int id) {
+        List<Integer> records = userMapper.selectFromRecord(id);
+        return records.stream().map(wantedId -> wantedMapper.selectOne(wantedId))
+                .filter(wanted -> wanted.getTaked() == 0)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Wanted> getAllTakedByUserId(int id) {
+        List<Integer> records = userMapper.selectFromRecord(id);
+        return records.stream().map(wantedId -> wantedMapper.selectOne(wantedId))
+                .filter(wanted -> wanted.getTaked() == 1)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public void updateUser(int id, String position, String phone) {
         int result = userMapper.update(id, position, phone);
         if (result != 1) {

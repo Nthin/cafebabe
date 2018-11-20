@@ -39,6 +39,20 @@ public interface UserService {
     List<Wanted> getAllWantedByUserId(int id);
 
     /**
+     * 根据用户id查询该用户的所有可用订单
+     * @param id
+     * @return
+     */
+    List<Wanted> getAllUntakedByUserId(int id);
+
+    /**
+     * 根据用户id查询该用户的所有历史订单
+     * @param id
+     * @return
+     */
+    List<Wanted> getAllTakedByUserId(int id);
+
+    /**
      * 补全用户资料
      * @param id
      * @param position

@@ -63,6 +63,30 @@ public class UserController {
     }
 
     /**
+     * 根据用户id获取该用户的所有wanted
+     * @param id
+     * @return
+     */
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(value = "/{id}/untaked")
+    public Result getAllUntaked(@PathVariable("id") int id) {
+        List<Wanted> wantedList = userService.getAllUntakedByUserId(id);
+        return new Result(wantedList);
+    }
+
+    /**
+     * 根据用户id获取该用户的所有wanted
+     * @param id
+     * @return
+     */
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(value = "/{id}/taked")
+    public Result getAllTaked(@PathVariable("id") int id) {
+        List<Wanted> wantedList = userService.getAllTakedByUserId(id);
+        return new Result(wantedList);
+    }
+
+    /**
      * 新增wanted
      * @param id
      * @param wanted
