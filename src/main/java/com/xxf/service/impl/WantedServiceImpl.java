@@ -5,6 +5,7 @@ import com.xxf.mapper.UserMapper;
 import com.xxf.mapper.WantedMapper;
 import com.xxf.mapper.WantedVOMapper;
 import com.xxf.service.WantedService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,7 +34,15 @@ public class WantedServiceImpl implements WantedService {
     }
 
     @Override
-    public List<WantedVO> listAllUntaked() {
+    public List<WantedVO> listAllUntaked(String by, String value, Integer gte, Integer lte) {
+        List<WantedVO> allUntaked = wantedVOMapper.selectUntaked();
+        if (StringUtils.isBlank(by)) {
+            return allUntaked;
+        }
+        if (StringUtils.isNotBlank(value)) {
+            String[] values = StringUtils.split(value, ",");
+        }
+        // TODO: 2018/11/27 filter+mapping实现对allUntaked过滤
         return wantedVOMapper.selectUntaked();
     }
 

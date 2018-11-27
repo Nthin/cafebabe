@@ -20,7 +20,7 @@ public interface WantedService {
      *
      * @return
      */
-    List<WantedVO> listAllUntaked();
+    List<WantedVO> listAllUntaked(String by, String value, Integer gte, Integer lte);
 
     /**
      * 根据品牌筛选可用记录

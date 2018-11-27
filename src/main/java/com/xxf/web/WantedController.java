@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.ws.rs.QueryParam;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -39,8 +41,9 @@ public class WantedController {
      */
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/untaked")
-    public Result listUntaked() {
-        List<WantedVO> wantedVOList = wantedService.listAllUntaked();
+    public Result listUntaked(@QueryParam("by") String by, @QueryParam("value") String value, @QueryParam("gte") Integer gte, @QueryParam("lte") Integer lte) {
+        System.out.println("by=" + by +",value="+value + ",gte=" + gte + ",lte=" + lte);
+        List<WantedVO> wantedVOList = wantedService.listAllUntaked(by, value, gte, lte);
         return new Result(wantedVOList);
     }
 
@@ -52,10 +55,13 @@ public class WantedController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/{brand}/untaked")
     public Result listUntakedByBrand(@PathVariable("brand") int brand) {
+        List<WantedVO> wantedVOList;
         if (brand == -1) {
-            return listUntaked();
+            wantedVOList = new ArrayList<>();
+//            wantedVOList = wantedService.listAllUntaked();
+        } else {
+            wantedVOList = wantedService.listUntakedByBrand(brand);
         }
-        List<WantedVO> wantedVOList = wantedService.listUntakedByBrand(brand);
         return new Result(wantedVOList);
     }
 
