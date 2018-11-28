@@ -9,8 +9,10 @@ import java.util.List;
 
 public interface WantedVOMapper {
 
-    @Select({"SELECT w.id, w.brand, w.address, u.nickname, w.end_time FROM wanted w LEFT JOIN record r ON w.id = r.wantedId LEFT JOIN user u ON r.userId = u.id where w.taked = 0 and w.end_time > CURRENT_TIME()"})
+    @Select({"SELECT w.id, w.brand, w.address, u.nickname, w.price_low, w.price_high, w.end_time FROM wanted w LEFT JOIN record r ON w.id = r.wantedId LEFT JOIN user u ON r.userId = u.id where w.taked = 0 and w.end_time > CURRENT_TIME()"})
     @Results({
+            @Result(property = "priceLow", column = "price_low"),
+            @Result(property = "priceHigh", column = "price_high"),
             @Result(property = "endTime", column = "end_time")
     })
     List<WantedVO> selectUntaked();
