@@ -6,6 +6,7 @@ import com.xxf.mapper.UserMapper;
 import com.xxf.mapper.WantedMapper;
 import com.xxf.mapper.WantedVOMapper;
 import com.xxf.service.WantedService;
+import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +51,7 @@ public class WantedServiceImpl implements WantedService {
         }
         if (gte != null || lte != null) {
             return allUntaked.stream().filter(wantedVO -> {
-                Integer wantedVOVal = getWantedVOValueByName(wantedVO, by, Integer.class);
+                Integer wantedVOVal = (Integer) getWantedVOValueByName(wantedVO, by, Integer.class);
                 if (gte == null) {
                     return wantedVOVal <= lte;
                 }
@@ -89,8 +90,7 @@ public class WantedServiceImpl implements WantedService {
         }
     }
 
-    @SuppressWarnings("unchecked")
-    private <T> T getWantedVOValueByName(WantedVO wantedVO, String name, Class<T> cls) {
-        return (T) Utils.getFieldValueByName(name, wantedVO);
+    private Object getWantedVOValueByName(WantedVO wantedVO, String name, Class cls) {
+        return ConvertUtils.convert(Utils.getFieldValueByName(name, wantedVO), cls);
     }
 }

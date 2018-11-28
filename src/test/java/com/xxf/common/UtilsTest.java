@@ -1,6 +1,9 @@
 package com.xxf.common;
 
 import com.xxf.entity.WantedVO;
+import org.apache.commons.beanutils.ConvertUtils;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -14,9 +17,17 @@ public class UtilsTest {
         wantedVO.setId(0);
         wantedVO.setNickname("test");
         wantedVO.setAddress("test");
-        wantedVO.setBrand(2);
+        wantedVO.setBrand(1);
         wantedVO.setEndTime(new Date());
-        Assert.assertEquals(Utils.getFieldValueByName("brand", wantedVO), 2);
+
+        String[] values = StringUtils.split("1", ",");
+        Object result = getWantedVOValueByName(wantedVO, "brand", String.class);
+        Assert.assertTrue(ArrayUtils.contains(values, result));
+        Assert.assertEquals(Utils.getFieldValueByName("brand", wantedVO), 1);
+    }
+
+    private Object getWantedVOValueByName(WantedVO wantedVO, String name, Class cls) {
+        return ConvertUtils.convert(Utils.getFieldValueByName(name, wantedVO), cls);
     }
 
 }
