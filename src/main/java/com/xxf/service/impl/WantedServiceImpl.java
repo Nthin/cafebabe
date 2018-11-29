@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 public class WantedServiceImpl implements WantedService {
 
     private static final String DEFAULT_SEPARATE_CHAR = ",";
+    private static final String NULL_STR = "null";
 
     private WantedMapper wantedMapper;
 
@@ -45,7 +46,7 @@ public class WantedServiceImpl implements WantedService {
         if (StringUtils.isBlank(by)) {
             return allUntaked;
         }
-        if (StringUtils.isNotBlank(value)) {
+        if (StringUtils.isNotBlank(value) && !StringUtils.equalsIgnoreCase(value, NULL_STR)) {
             String[] values = StringUtils.split(value, DEFAULT_SEPARATE_CHAR);
             return allUntaked.stream().filter(wantedVO -> ArrayUtils.contains(values, getWantedVOValueByName(wantedVO, by, String.class))).collect(Collectors.toList());
         }
