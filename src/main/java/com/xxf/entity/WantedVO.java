@@ -16,11 +16,13 @@ public class WantedVO {
 
     private String nickname;
 
-    private int priceLow;
-
     private int priceHigh;
 
     @JsonFormat(pattern = "HH:mm", timezone = "GMT+8")
     private Date endTime;
+
+    private double latitude;
+
+    private double longitude;
 
 }

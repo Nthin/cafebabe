@@ -30,6 +30,10 @@ public class Wanted {
 
     private String addressDetail;
 
+    private double latitude;
+
+    private double longitude;
+
     private int taked;
 
 }
