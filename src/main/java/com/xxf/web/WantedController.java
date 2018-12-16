@@ -40,8 +40,8 @@ public class WantedController {
      */
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/untaked")
-    public Result listUntaked(@QueryParam("by") String by, @QueryParam("value") String value, @QueryParam("gte") Integer gte, @QueryParam("lte") Integer lte) {
-        List<WantedVO> wantedVOList = wantedService.listAllUntaked(by, value, gte, lte);
+    public Result listUntaked(@QueryParam("pageNo") Integer pageNo, @QueryParam("pageSize") Integer pageSize) {
+        List<WantedVO> wantedVOList = wantedService.listAllUntaked(pageNo, pageSize);
         return new Result(wantedVOList);
     }
 

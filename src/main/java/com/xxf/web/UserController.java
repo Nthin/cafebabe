@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.ws.rs.QueryParam;
 import java.util.List;
 import java.util.Map;
 
@@ -57,31 +58,31 @@ public class UserController {
      */
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/{id}/wanted")
-    public Result getAllWanted(@PathVariable("id") int id) {
+    public Result getAllWanted(@PathVariable("id") int id, @QueryParam("pageNo") Integer pageNo, @QueryParam("pageSize") Integer pageSize) {
         List<Wanted> wantedList = userService.getAllWantedByUserId(id);
         return new Result(wantedList);
     }
 
     /**
-     * 根据用户id获取该用户的所有wanted
+     * 根据用户id获取该用户的所有可用wanted
      * @param id
      * @return
      */
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/{id}/untaked")
-    public Result getAllUntaked(@PathVariable("id") int id) {
+    public Result getAllUntaked(@PathVariable("id") int id, @QueryParam("pageNo") Integer pageNo, @QueryParam("pageSize") Integer pageSize) {
         List<Wanted> wantedList = userService.getAllUntakedByUserId(id);
         return new Result(wantedList);
     }
 
     /**
-     * 根据用户id获取该用户的所有wanted
+     * 根据用户id获取该用户的所有历史wanted
      * @param id
      * @return
      */
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/{id}/taked")
-    public Result getAllTaked(@PathVariable("id") int id) {
+    public Result getAllTaked(@PathVariable("id") int id, @QueryParam("pageNo") Integer pageNo, @QueryParam("pageSize") Integer pageSize) {
         List<Wanted> wantedList = userService.getAllTakedByUserId(id);
         return new Result(wantedList);
     }
