@@ -20,7 +20,7 @@ public interface WantedService {
      *
      * @return
      */
-    List<WantedVO> listAllUntaked(Integer pageNo, Integer pageSize);
+    List<WantedVO> listAllUntaked(List<Integer> brands, Integer priceHigh);
 
     /**
      * 查询某一条记录的所有信息
