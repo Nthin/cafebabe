@@ -38,10 +38,15 @@ public class WantedServiceImpl implements WantedService {
     public List<WantedVO> listAllUntaked(List<Integer> brands, Integer priceHigh) {
         List<WantedVO> allUntaked = wantedVOMapper.selectUntaked();
         Predicate<WantedVO> filter = wantedVO -> true;
-        if (brands != null && !brands.isEmpty()) {
-            for (Integer brand : brands) {
-                Predicate<WantedVO> brandFilter = wantedVO -> wantedVO.getBrand().equals(brand);
-                filter = filter.and(brandFilter);
+        if (!brands.isEmpty()) {
+            for (int i = 0; i < brands.size(); i++) {
+                final int index = i;
+                Predicate<WantedVO> brandFilter = wantedVO -> wantedVO.getBrand().equals(brands.get(index));
+                if (i == 0) {
+                    filter = filter.and(brandFilter);
+                } else {
+                    filter = filter.or(brandFilter);
+                }
             }
         }
         if (priceHigh != null) {

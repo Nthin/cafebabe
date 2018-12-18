@@ -1,15 +1,14 @@
 package com.xxf.web;
 
-import com.xxf.entity.DetailVO;
-import com.xxf.entity.Result;
-import com.xxf.entity.Wanted;
-import com.xxf.entity.WantedVO;
+import com.xxf.entity.*;
 import com.xxf.service.WantedService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.QueryParam;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -40,8 +39,25 @@ public class WantedController {
      */
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/untaked")
-    public Result listUntaked(@QueryParam("brand") List<Integer> brands, @QueryParam("priceHigh") Integer priceHigh) {
-        List<WantedVO> wantedVOList = wantedService.listAllUntaked(brands, priceHigh);
+    public Result listUntaked(@QueryParam("brand") String brand, @QueryParam("price") String price) {
+        List<Integer> brandList = new ArrayList<>();
+        Integer priceHigh = null;
+        try {
+            if (StringUtils.isNotBlank(brand)) {
+                brand = StringUtils.trim(brand);
+                String[] brands = StringUtils.split(brand, ",");
+                for (String str : brands) {
+                    brandList.add(Integer.parseInt(str.trim()));
+                }
+            }
+            if (StringUtils.isNotBlank(price)) {
+                price = StringUtils.trim(brand);
+                priceHigh = Integer.parseInt(price);
+            }
+        } catch (NumberFormatException nfe) {
+            throw new CafeException(HttpStatus.METHOD_NOT_ALLOWED.value(), "Query Param in Wrong Format");
+        }
+        List<WantedVO> wantedVOList = wantedService.listAllUntaked(brandList, priceHigh);
         return new Result(wantedVOList);
     }
 
