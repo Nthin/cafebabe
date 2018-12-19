@@ -43,15 +43,15 @@ public class WantedController {
         List<Integer> brandList = new ArrayList<>();
         Integer priceHigh = null;
         try {
-            if (StringUtils.isNotBlank(brand)) {
+            if (StringUtils.isNotBlank(brand) && !StringUtils.equalsIgnoreCase(brand, "null")) {
                 brand = StringUtils.trim(brand);
                 String[] brands = StringUtils.split(brand, ",");
                 for (String str : brands) {
                     brandList.add(Integer.parseInt(str.trim()));
                 }
             }
-            if (StringUtils.isNotBlank(price)) {
-                price = StringUtils.trim(brand);
+            if (StringUtils.isNotBlank(price) && !StringUtils.equalsIgnoreCase(price, "null")) {
+                price = StringUtils.trim(price);
                 priceHigh = Integer.parseInt(price);
             }
         } catch (NumberFormatException nfe) {
