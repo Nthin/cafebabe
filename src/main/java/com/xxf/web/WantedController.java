@@ -50,12 +50,16 @@ public class WantedController {
                     brandList.add(Integer.parseInt(str.trim()));
                 }
             }
+        } catch (NumberFormatException nfe) {
+            throw new CafeException(HttpStatus.METHOD_NOT_ALLOWED.value(), "Query Param in Wrong Format: " + brand);
+        }
+        try {
             if (StringUtils.isNotBlank(price) && !StringUtils.equalsIgnoreCase(price, "null")) {
                 price = StringUtils.trim(price);
                 priceHigh = Integer.parseInt(price);
             }
         } catch (NumberFormatException nfe) {
-            throw new CafeException(HttpStatus.METHOD_NOT_ALLOWED.value(), "Query Param in Wrong Format");
+            throw new CafeException(HttpStatus.METHOD_NOT_ALLOWED.value(), "Query Param in Wrong Format: " + price);
         }
         List<WantedVO> wantedVOList = wantedService.listAllUntaked(brandList, priceHigh);
         return new Result(wantedVOList);
