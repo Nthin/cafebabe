@@ -29,6 +29,7 @@ public class UserController {
 
     /**
      * 根据openId获取用户信息
+     *
      * @param openId
      * @return
      */
@@ -41,6 +42,7 @@ public class UserController {
 
     /**
      * 新增用户
+     *
      * @param user
      * @return
      */
@@ -53,6 +55,7 @@ public class UserController {
 
     /**
      * 根据用户id获取该用户的所有wanted
+     *
      * @param id
      * @return
      */
@@ -65,6 +68,7 @@ public class UserController {
 
     /**
      * 根据用户id获取该用户的所有可用wanted
+     *
      * @param id
      * @return
      */
@@ -77,6 +81,7 @@ public class UserController {
 
     /**
      * 根据用户id获取该用户的所有历史wanted
+     *
      * @param id
      * @return
      */
@@ -89,6 +94,7 @@ public class UserController {
 
     /**
      * 新增wanted
+     *
      * @param id
      * @param wanted
      * @return
@@ -102,6 +108,7 @@ public class UserController {
 
     /**
      * 取消wanted的taked状态，重新释放到可用list中
+     *
      * @param userId
      * @param wantedId
      * @return
@@ -115,6 +122,7 @@ public class UserController {
 
     /**
      * 补全用户信息
+     *
      * @param id
      * @param body
      * @return

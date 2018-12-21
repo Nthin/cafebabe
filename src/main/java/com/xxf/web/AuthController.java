@@ -21,6 +21,7 @@ public class AuthController {
 
     /**
      * 获取openId
+     *
      * @param code
      * @return
      */

@@ -1,5 +1,6 @@
 package com.xxf.web;
 
+import com.xxf.common.EnablePaging;
 import com.xxf.entity.*;
 import com.xxf.service.WantedService;
 import org.apache.commons.lang3.StringUtils;
@@ -24,6 +25,7 @@ public class WantedController {
 
     /**
      * 获取所有wanted
+     *
      * @return
      */
     @ResponseStatus(HttpStatus.OK)
@@ -35,16 +37,19 @@ public class WantedController {
 
     /**
      * 获取所有可用wanted
+     *
      * @return
      */
+    @EnablePaging
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/untaked")
-    public Result listUntaked(@QueryParam("brand") String brand, @QueryParam("price") String price) {
-        List<Integer> brandList = new ArrayList<>();
+    public Result listUntaked(@QueryParam("brand") String brand, @QueryParam("price") String price, @QueryParam("pageNum") Integer pageNum, @QueryParam("pageSize") Integer pageSize) {
+        List<Integer> brandList = null;
         Integer priceHigh = null;
         try {
             if (StringUtils.isNotBlank(brand) && !StringUtils.equalsIgnoreCase(brand, "null")) {
                 brand = StringUtils.trim(brand);
+                brandList = new ArrayList<>();
                 String[] brands = StringUtils.split(brand, ",");
                 for (String str : brands) {
                     brandList.add(Integer.parseInt(str.trim()));
@@ -67,6 +72,7 @@ public class WantedController {
 
     /**
      * 获取wanted详情
+     *
      * @param id
      * @return
      */
@@ -79,6 +85,7 @@ public class WantedController {
 
     /**
      * 将wanted的状态改为taked
+     *
      * @param id
      * @return
      */

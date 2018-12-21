@@ -6,6 +6,7 @@ public interface AuthService {
 
     /**
      * 获取openId（临时方案）
+     *
      * @param code
      * @return
      */

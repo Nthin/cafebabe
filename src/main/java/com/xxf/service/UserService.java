@@ -40,6 +40,7 @@ public interface UserService {
 
     /**
      * 根据用户id查询该用户的所有可用订单
+     *
      * @param id
      * @return
      */
@@ -47,6 +48,7 @@ public interface UserService {
 
     /**
      * 根据用户id查询该用户的所有历史订单
+     *
      * @param id
      * @return
      */
@@ -54,6 +56,7 @@ public interface UserService {
 
     /**
      * 补全用户资料
+     *
      * @param id
      * @param position
      * @param phone

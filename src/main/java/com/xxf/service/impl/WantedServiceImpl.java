@@ -10,8 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 @Service
 public class WantedServiceImpl implements WantedService {
@@ -36,26 +34,7 @@ public class WantedServiceImpl implements WantedService {
 
     @Override
     public List<WantedVO> listAllUntaked(List<Integer> brands, Integer priceHigh) {
-        List<WantedVO> allUntaked = wantedVOMapper.selectUntaked();
-        Predicate<WantedVO> filter = wantedVO -> true;
-        if (!brands.isEmpty()) {
-            for (int i = 0; i < brands.size(); i++) {
-                final int index = i;
-                Predicate<WantedVO> brandFilter = wantedVO -> wantedVO.getBrand().equals(brands.get(index));
-                if (i == 0) {
-                    filter = filter.and(brandFilter);
-                } else {
-                    filter = filter.or(brandFilter);
-                }
-            }
-        }
-        if (priceHigh != null) {
-            Predicate<WantedVO> priceFilter = wantedVO -> wantedVO.getPriceHigh() <= priceHigh;
-            filter = filter.and(priceFilter);
-        }
-        return allUntaked.stream()
-                .filter(filter)
-                .collect(Collectors.toList());
+        return wantedVOMapper.selectUntakedByFilter(brands, priceHigh);
     }
 
     @Override

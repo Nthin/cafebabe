@@ -1,7 +1,8 @@
 package com.xxf.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
-import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInterceptor;
+import org.apache.ibatis.plugin.Interceptor;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.*;
@@ -17,6 +18,7 @@ import java.util.Properties;
 
 @Configuration
 @EnableWebMvc
+@EnableAspectJAutoProxy
 @ComponentScan(basePackages = {"com.xxf"}, excludeFilters = {@ComponentScan.Filter(type = FilterType.ANNOTATION, value = EnableWebMvc.class)})
 @PropertySource("classpath:application.properties")
 @MapperScan("com.xxf.mapper")
@@ -43,23 +45,19 @@ public class AppConfig {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(dataSource);
         sqlSessionFactoryBean.setTypeAliasesPackage(propertiesConfig.getMybatisTypeAliasPackage());
+        PageInterceptor pageInterceptor = new PageInterceptor();
+        Properties properties = new Properties();
+        properties.setProperty("offsetAsPageNum", "true");
+        properties.setProperty("rowBoundsWithCount", "true");
+        properties.setProperty("reasonable", "true");
+        pageInterceptor.setProperties(properties);
+        sqlSessionFactoryBean.setPlugins(new Interceptor[]{pageInterceptor});
         return sqlSessionFactoryBean;
     }
 
     @Bean
     public PlatformTransactionManager transactionManager(DataSource dataSource) {
         return new DataSourceTransactionManager(dataSource);
-    }
-
-    @Bean
-    public PageHelper pageHelper() {
-        PageHelper pageHelper = new PageHelper();
-        Properties properties = new Properties();
-        properties.setProperty("offsetAsPageNum", "true");
-        properties.setProperty("rowBoundsWithCount", "true");
-        properties.setProperty("reasonable", "true");
-        pageHelper.setProperties(properties);
-        return pageHelper;
     }
 
 }
