@@ -38,9 +38,15 @@ public class EnablePagingHandler {
         if (pageSize == null) {
             pageSize = 5;
         }
-        PageHelper.startPage(pageNum, pageSize);
-        Object returnValue = point.proceed(args);
-        return (Result) returnValue;
+        try {
+            PageHelper.startPage(pageNum, pageSize);
+            Object returnValue = point.proceed(args);
+            return (Result) returnValue;
+        } finally {
+            if (PageHelper.getLocalPage() != null) {
+                PageHelper.clearPage();
+            }
+        }
     }
 
     /**

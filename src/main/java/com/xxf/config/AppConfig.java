@@ -47,9 +47,7 @@ public class AppConfig {
         sqlSessionFactoryBean.setTypeAliasesPackage(propertiesConfig.getMybatisTypeAliasPackage());
         PageInterceptor pageInterceptor = new PageInterceptor();
         Properties properties = new Properties();
-        properties.setProperty("offsetAsPageNum", "true");
-        properties.setProperty("rowBoundsWithCount", "true");
-        properties.setProperty("reasonable", "true");
+        properties.setProperty("reasonable", "false");
         pageInterceptor.setProperties(properties);
         sqlSessionFactoryBean.setPlugins(new Interceptor[]{pageInterceptor});
         return sqlSessionFactoryBean;
