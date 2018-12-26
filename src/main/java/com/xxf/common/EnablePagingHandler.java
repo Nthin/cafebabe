@@ -1,8 +1,11 @@
 package com.xxf.common;
 
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.xxf.entity.CafeException;
+import com.xxf.entity.PageVO;
 import com.xxf.entity.Result;
+import com.xxf.entity.WantedVO;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -13,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Aspect
@@ -24,6 +28,7 @@ public class EnablePagingHandler {
 
     }
 
+    @SuppressWarnings("unchecked")
     @Around(value = "serviceAspect()")
     public Result doAround(ProceedingJoinPoint point) throws Throwable {
         Object[] args = point.getArgs();
@@ -40,8 +45,11 @@ public class EnablePagingHandler {
         }
         try {
             PageHelper.startPage(pageNum, pageSize);
-            Object returnValue = point.proceed(args);
-            return (Result) returnValue;
+            Result returnValue = (Result) point.proceed(args);
+            List<WantedVO> wantedVOList = (List<WantedVO>) returnValue.getData();
+            PageInfo<WantedVO> pageInfo = new PageInfo<>(wantedVOList);
+            PageVO pageVO = new PageVO(wantedVOList, pageInfo.getNextPage());
+            return new Result(pageVO);
         } finally {
             if (PageHelper.getLocalPage() != null) {
                 PageHelper.clearPage();
