@@ -1,7 +1,10 @@
 package com.xxf.web;
 
 import com.xxf.common.EnablePaging;
-import com.xxf.entity.*;
+import com.xxf.entity.CafeException;
+import com.xxf.entity.DetailVO;
+import com.xxf.entity.Result;
+import com.xxf.entity.WantedVO;
 import com.xxf.service.WantedService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,12 +31,12 @@ public class WantedController {
      *
      * @return
      */
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping(value = "")
-    public Result listWanted() {
-        List<Wanted> wantedList = wantedService.listAllWanted();
-        return new Result(wantedList);
-    }
+//    @ResponseStatus(HttpStatus.OK)
+//    @GetMapping(value = "")
+//    public Result listWanted() {
+//        List<Wanted> wantedList = wantedService.listAllWanted();
+//        return new Result(wantedList);
+//    }
 
     /**
      * 获取所有可用wanted
