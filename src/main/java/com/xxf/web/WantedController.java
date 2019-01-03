@@ -24,7 +24,7 @@ public class WantedController {
     }
 
     /**
-     * 获取所有wanted 
+     * 获取所有wanted
      *
      * @return
      */
