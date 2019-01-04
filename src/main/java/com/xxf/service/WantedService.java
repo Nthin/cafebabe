@@ -41,10 +41,9 @@ public interface WantedService {
 
     /**
      * 下订单
-     *
-     * @param id
+     * @param wantedId
      * @param taked
-     * @return
+     * @param takedUserId
      */
-    void changeWantedStatus(int id, int taked);
+    void changeWantedStatus(int wantedId, int taked, int takedUserId);
 }

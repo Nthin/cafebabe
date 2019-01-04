@@ -59,12 +59,12 @@ public class UserController {
      * @param id
      * @return
      */
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping(value = "/{id}/wanted")
-    public Result getAllWanted(@PathVariable("id") int id, @QueryParam("pageNo") Integer pageNo, @QueryParam("pageSize") Integer pageSize) {
-        List<Wanted> wantedList = userService.getAllWantedByUserId(id);
-        return new Result(wantedList);
-    }
+//    @ResponseStatus(HttpStatus.OK)
+//    @GetMapping(value = "/{id}/wanted")
+//    public Result getAllWanted(@PathVariable("id") int id, @QueryParam("pageNo") Integer pageNo, @QueryParam("pageSize") Integer pageSize) {
+//        List<Wanted> wantedList = userService.getAllWantedByUserId(id);
+//        return new Result(wantedList);
+//    }
 
     /**
      * 根据用户id获取该用户的所有可用wanted
@@ -113,12 +113,12 @@ public class UserController {
      * @param wantedId
      * @return
      */
-    @ResponseStatus(HttpStatus.CREATED)
-    @PutMapping(value = "/{userId}/{wantedId}")
-    public Result untakeWanted(@PathVariable("userId") int userId, @PathVariable("wantedId") int wantedId) {
-        wantedService.changeWantedStatus(wantedId, 0);
-        return new Result(HttpStatus.CREATED.value());
-    }
+//    @ResponseStatus(HttpStatus.CREATED)
+//    @PutMapping(value = "/{userId}/{wantedId}")
+//    public Result untakeWanted(@PathVariable("userId") int userId, @PathVariable("wantedId") int wantedId) {
+//        wantedService.changeWantedStatus(wantedId, 0, userId);
+//        return new Result(HttpStatus.CREATED.value());
+//    }
 
     /**
      * 补全用户信息

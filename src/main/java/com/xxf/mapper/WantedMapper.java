@@ -31,12 +31,15 @@ public interface WantedMapper {
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     int insert(Wanted wanted);
 
-    @Insert({"insert into record(wantedId, userId) values(#{wantedId}, #{userId})"})
-    int insertRecord(@Param("wantedId") int wantedId, @Param("userId") int userId);
+    @Insert({"insert into record(wantedId, userId, add_time) values(#{wantedId}, #{userId}, #{addTime})"})
+    int insertRecord(@Param("wantedId") int wantedId, @Param("userId") int userId, @Param("addTime") String addTime);
 
     @Update({"update wanted set taked = #{taked} where id = #{id}"})
     int update(@Param("id") int id, @Param("taked") int taked);
 
     @Select({"select r.userId from record r where wantedId = #{id}"})
     int selectFromRecord(@Param("id") int id);
+
+    @Update({"update record r set r.taked_userId = #{takedUserId}, r.taked_time = #{takedTime} where r.wantedId = #{wantedId}"})
+    int updateRecord(@Param("wantedId") int wantedId, @Param("takedUserId") int takedUserId, @Param("takedTime") String takedTime);
 }

@@ -94,8 +94,8 @@ public class WantedController {
      */
     @ResponseStatus(HttpStatus.CREATED)
     @PutMapping(value = "/{id}")
-    public Result takeWanted(@PathVariable("id") int id) {
-        wantedService.changeWantedStatus(id, 1);
+    public Result takeWanted(@PathVariable("id") int id, @QueryParam("takedUserId") int takedUserId) {
+        wantedService.changeWantedStatus(id, 1, takedUserId);
         return new Result(HttpStatus.CREATED.value());
     }
 }

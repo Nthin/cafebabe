@@ -25,4 +25,7 @@ public class WantedVO {
 
     private double longitude;
 
+    @JsonFormat(pattern = "yyyy-MM-dd hh:mm", timezone = "GMT+8")
+    private Date addTime;
+
 }

@@ -20,7 +20,7 @@ public interface WantedVOMapper {
     List<WantedVO> selectUntaked();
 
     @Lang(SimpleSelectInExtendedLanguageDriver.class)
-    @Select({"<script> SELECT w.id, w.brand, w.address, u.nickname, w.price_high, w.end_time, w.latitude, w.longitude " +
+    @Select({"<script> SELECT w.id, w.brand, w.address, u.nickname, w.price_high, w.end_time, w.latitude, w.longitude, r.add_time " +
             "FROM wanted w LEFT JOIN record r ON w.id = r.wantedId LEFT JOIN user u ON r.userId = u.id " +
             "WHERE w.taked = 0 " +
             "AND w.end_time > CURRENT_TIME() " +
@@ -29,7 +29,8 @@ public interface WantedVOMapper {
     @Results({
             @Result(property = "priceLow", column = "price_low"),
             @Result(property = "priceHigh", column = "price_high"),
-            @Result(property = "endTime", column = "end_time")
+            @Result(property = "endTime", column = "end_time"),
+            @Result(property = "addTime", column = "add_time")
     })
     List<WantedVO> selectUntakedByFilter(@Param("brands") List<Integer> brands, @Param("price") Integer price);
 
