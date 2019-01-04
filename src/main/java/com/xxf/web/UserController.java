@@ -59,12 +59,12 @@ public class UserController {
      * @param id
      * @return
      */
-//    @ResponseStatus(HttpStatus.OK)
-//    @GetMapping(value = "/{id}/wanted")
-//    public Result getAllWanted(@PathVariable("id") int id, @QueryParam("pageNo") Integer pageNo, @QueryParam("pageSize") Integer pageSize) {
-//        List<Wanted> wantedList = userService.getAllWantedByUserId(id);
-//        return new Result(wantedList);
-//    }
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(value = "/{id}/wanted")
+    public Result getAllWanted(@PathVariable("id") int id, @QueryParam("pageNo") Integer pageNo, @QueryParam("pageSize") Integer pageSize) {
+        List<Wanted> wantedList = userService.getAllWantedByUserId(id);
+        return new Result(wantedList);
+    }
 
     /**
      * 根据用户id获取该用户的所有可用wanted
