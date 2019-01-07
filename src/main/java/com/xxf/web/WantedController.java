@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.ws.rs.QueryParam;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/wanted")
@@ -94,8 +95,12 @@ public class WantedController {
      */
     @ResponseStatus(HttpStatus.CREATED)
     @PutMapping(value = "/{id}")
-    public Result takeWanted(@PathVariable("id") int id, @QueryParam("takedUserId") int takedUserId) {
-        wantedService.changeWantedStatus(id, 1, takedUserId);
+    public Result takeWanted(@PathVariable("id") int id,  @RequestBody Map<String, String> body) {
+        String takedUserId = body.get("takedUserId");
+        if (takedUserId == null) {
+            throw new CafeException(HttpStatus.METHOD_NOT_ALLOWED.value(), "Query Param is Empty");
+        }
+        wantedService.changeWantedStatus(id, 1, Integer.parseInt(takedUserId));
         return new Result(HttpStatus.CREATED.value());
     }
 }
