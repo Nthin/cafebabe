@@ -9,12 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
 public class WantedServiceImpl implements WantedService {
+
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     private WantedMapper wantedMapper;
 
@@ -54,8 +56,7 @@ public class WantedServiceImpl implements WantedService {
             throw new CafeException("insert into wanted fail, wanted : " + wanted + ", userId : " + userId);
         }
         int wantedId = wanted.getId();
-        String addTime = new SimpleDateFormat().format(new Date());
-        System.out.println("addTime: " + addTime);
+        String addTime = LocalDateTime.now().format(formatter);
         if (wantedMapper.insertRecord(wantedId, userId, addTime) != 1) {
             throw new CafeException("insert into record fail, wanted : " + wanted + ", userId : " + userId);
         }
@@ -67,8 +68,7 @@ public class WantedServiceImpl implements WantedService {
         if (wantedMapper.update(wantedId, taked) != 1) {
             throw new CafeException("change wanted status fail, wantedId : " + wantedId);
         }
-        String takedTime = new SimpleDateFormat().format(new Date());
-        System.out.println("takedTime: " + takedTime);
+        String takedTime = LocalDateTime.now().format(formatter);
         if (wantedMapper.updateRecord(wantedId, takedUserId, takedTime) != 1) {
             throw new CafeException("update record fail, id : " + wantedId);
         }

@@ -8,10 +8,6 @@ import org.apache.ibatis.annotations.Select;
 public interface AuthMapper {
 
     @Select({"select * from auth"})
-    @Results({
-            @Result(property = "appId", column = "app_id"),
-            @Result(property = "appSecret", column = "app_secret")
-    })
     AuthCode select();
 
 }

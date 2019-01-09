@@ -42,13 +42,17 @@ public class AppConfig {
 
     @Bean
     public SqlSessionFactoryBean sqlSessionFactoryBean(DataSource dataSource, PropertyConfig propertiesConfig) throws IOException {
-        SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
-        sqlSessionFactoryBean.setDataSource(dataSource);
-        sqlSessionFactoryBean.setTypeAliasesPackage(propertiesConfig.getMybatisTypeAliasPackage());
+        org.apache.ibatis.session.Configuration configuration = new org.apache.ibatis.session.Configuration();
+        configuration.setMapUnderscoreToCamelCase(true);
         PageInterceptor pageInterceptor = new PageInterceptor();
         Properties properties = new Properties();
         properties.setProperty("reasonable", "false");
         pageInterceptor.setProperties(properties);
+
+        SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
+        sqlSessionFactoryBean.setDataSource(dataSource);
+        sqlSessionFactoryBean.setTypeAliasesPackage(propertiesConfig.getMybatisTypeAliasPackage());
+        sqlSessionFactoryBean.setConfiguration(configuration);
         sqlSessionFactoryBean.setPlugins(new Interceptor[]{pageInterceptor});
         return sqlSessionFactoryBean;
     }

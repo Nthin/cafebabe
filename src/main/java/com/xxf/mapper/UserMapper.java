@@ -8,27 +8,18 @@ import java.util.List;
 public interface UserMapper {
 
     @Select({"select * from user"})
-    @Results({
-            @Result(property = "registerTime", column = "register_time")
-    })
     List<User> selectAll();
 
-    @Select({"select * from user where openId = #{openId}"})
-    @Results({
-            @Result(property = "registerTime", column = "register_time")
-    })
+    @Select({"select * from user u where u.open_id = #{openId}"})
     User selectOne(@Param("openId") String openId);
 
-    @Select({"select * from user where id = #{id}"})
-    @Results({
-            @Result(property = "registerTime", column = "register_time")
-    })
+    @Select({"select * from user u where u.id = #{id}"})
     User selectOneById(@Param("id") int id);
 
-    @Insert({"insert into user(openId, register_time, nickname, avatarUrl) values(#{openId}, #{registerTime}, #{nickname}, #{avatarUrl})"})
+    @Insert({"insert into user(open_id, register_time, nickname, avatar_url) values(#{openId}, #{registerTime}, #{nickname}, #{avatarUrl})"})
     int insert(User user);
 
-    @Select({"select r.wantedId from record r where userId = #{id}"})
+    @Select({"select r.wanted_id from record r where r.add_user_id = #{id}"})
     List<Integer> selectFromRecord(@Param("id") int id);
 
     @Update({"update user u set u.position = #{position}, u.phone = #{phone} where u.id = #{id}"})

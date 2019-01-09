@@ -1,4 +1,4 @@
-package com.xxf.service;
+package com.xxf.common;
 
 import com.xxf.entity.CafeException;
 import com.xxf.entity.Result;

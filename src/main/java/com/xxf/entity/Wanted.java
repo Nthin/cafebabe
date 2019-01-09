@@ -17,9 +17,6 @@ public class Wanted {
     private String taste;
 
     @JsonFormat(pattern = "HH:mm", timezone = "GMT+8")
-    private Date startTime;
-
-    @JsonFormat(pattern = "HH:mm", timezone = "GMT+8")
     private Date endTime;
 
     private int priceLow;
