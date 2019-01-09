@@ -2,7 +2,9 @@ package com.xxf.mapper;
 
 import com.xxf.common.SimpleSelectInExtendedLanguageDriver;
 import com.xxf.entity.WantedVO;
-import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.annotations.Lang;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 

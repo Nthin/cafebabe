@@ -95,7 +95,7 @@ public class WantedController {
      */
     @ResponseStatus(HttpStatus.CREATED)
     @PutMapping(value = "/{id}")
-    public Result takeWanted(@PathVariable("id") int id,  @RequestBody Map<String, String> body) {
+    public Result takeWanted(@PathVariable("id") int id, @RequestBody Map<String, String> body) {
         String takedUserId = body.get("takedUserId");
         if (takedUserId == null) {
             throw new CafeException(HttpStatus.METHOD_NOT_ALLOWED.value(), "Query Param is Empty");
