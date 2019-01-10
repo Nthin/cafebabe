@@ -44,9 +44,14 @@ public class WantedServiceImpl implements WantedService {
     @Override
     public DetailVO getDetail(int id) {
         Wanted wanted = wantedMapper.selectOne(id);
-        int userId = wantedMapper.selectFromRecord(id);
-        User user = userMapper.selectOneById(userId);
-        return new DetailVO(wanted, user);
+        Record record = wantedMapper.selectFromRecord(id);
+        User user = userMapper.selectOneById(record.getAddUserId());
+        Integer takedUserId = record.getTakedUserId();
+        if (takedUserId != null) {
+            User takedUser = userMapper.selectOneById(record.getTakedUserId());
+            return new DetailVO(wanted, user, record.getAddTime(), takedUser, record.getTakedTime());
+        }
+        return new DetailVO(wanted, user, record.getAddTime());
     }
 
     @Transactional(rollbackFor = CafeException.class)

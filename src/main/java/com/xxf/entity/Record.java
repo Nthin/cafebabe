@@ -1,29 +1,26 @@
 package com.xxf.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import java.util.Date;
 
 @Data
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class DetailVO {
+@NoArgsConstructor
+public class Record {
 
     @NonNull
-    private Wanted wanted;
+    private int wantedId;
 
     @NonNull
-    private User user;
+    private int addUserId;
 
-    @NonNull
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date addTime;
 
-    private User takedUser;
+    private Integer takedUserId;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date takedTime;

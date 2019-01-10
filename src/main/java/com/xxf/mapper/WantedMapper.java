@@ -1,5 +1,6 @@
 package com.xxf.mapper;
 
+import com.xxf.entity.Record;
 import com.xxf.entity.Wanted;
 import org.apache.ibatis.annotations.*;
 
@@ -23,8 +24,8 @@ public interface WantedMapper {
     @Update({"update wanted set taked = #{taked} where id = #{id}"})
     int update(@Param("id") int id, @Param("taked") int taked);
 
-    @Select({"select r.add_user_id from record r where r.wanted_id = #{id}"})
-    int selectFromRecord(@Param("id") int id);
+    @Select({"select * from record r where r.wanted_id = #{id}"})
+    Record selectFromRecord(@Param("id") int id);
 
     @Update({"update record r set r.taked_user_id = #{takedUserId}, r.taked_time = #{takedTime} where r.wanted_id = #{wantedId}"})
     int updateRecord(@Param("wantedId") int wantedId, @Param("takedUserId") int takedUserId, @Param("takedTime") String takedTime);
