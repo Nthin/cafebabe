@@ -2,6 +2,7 @@ package com.xxf.service;
 
 import com.xxf.entity.User;
 import com.xxf.entity.Wanted;
+import com.xxf.entity.WantedVO;
 
 import java.util.List;
 
@@ -36,7 +37,7 @@ public interface UserService {
      * @param id
      * @return
      */
-    List<Wanted> getAllWantedByUserId(int id);
+    List<WantedVO> getAllWantedByUserId(int id);
 
     /**
      * 根据用户id查询该用户的所有可用订单
@@ -44,7 +45,7 @@ public interface UserService {
      * @param id
      * @return
      */
-    List<Wanted> getAllUntakedByUserId(int id);
+    List<WantedVO> getAllUntakedByUserId(int id);
 
     /**
      * 根据用户id查询该用户的所有历史订单
@@ -52,7 +53,7 @@ public interface UserService {
      * @param id
      * @return
      */
-    List<Wanted> getAllTakedByUserId(int id);
+    List<WantedVO> getAllTakedByUserId(int id);
 
     /**
      * 补全用户资料

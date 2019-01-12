@@ -1,8 +1,10 @@
 package com.xxf.web;
 
+import com.xxf.common.EnablePaging;
 import com.xxf.entity.Result;
 import com.xxf.entity.User;
 import com.xxf.entity.Wanted;
+import com.xxf.entity.WantedVO;
 import com.xxf.service.UserService;
 import com.xxf.service.WantedService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,11 +61,12 @@ public class UserController {
      * @param id
      * @return
      */
+    @EnablePaging
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/{id}/wanted")
     public Result getAllWanted(@PathVariable("id") int id, @QueryParam("pageNo") Integer pageNo, @QueryParam("pageSize") Integer pageSize) {
-        List<Wanted> wantedList = userService.getAllWantedByUserId(id);
-        return new Result(wantedList);
+        List<WantedVO> wantedVOList = userService.getAllWantedByUserId(id);
+        return new Result(wantedVOList);
     }
 
     /**
@@ -72,10 +75,11 @@ public class UserController {
      * @param id
      * @return
      */
+    @EnablePaging
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/{id}/untaked")
     public Result getAllUntaked(@PathVariable("id") int id, @QueryParam("pageNo") Integer pageNo, @QueryParam("pageSize") Integer pageSize) {
-        List<Wanted> wantedList = userService.getAllUntakedByUserId(id);
+        List<WantedVO> wantedList = userService.getAllUntakedByUserId(id);
         return new Result(wantedList);
     }
 
@@ -85,10 +89,11 @@ public class UserController {
      * @param id
      * @return
      */
+    @EnablePaging
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/{id}/taked")
     public Result getAllTaked(@PathVariable("id") int id, @QueryParam("pageNo") Integer pageNo, @QueryParam("pageSize") Integer pageSize) {
-        List<Wanted> wantedList = userService.getAllTakedByUserId(id);
+        List<WantedVO> wantedList = userService.getAllTakedByUserId(id);
         return new Result(wantedList);
     }
 

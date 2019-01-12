@@ -3,8 +3,10 @@ package com.xxf.service.impl;
 import com.xxf.entity.CafeException;
 import com.xxf.entity.User;
 import com.xxf.entity.Wanted;
+import com.xxf.entity.WantedVO;
 import com.xxf.mapper.UserMapper;
 import com.xxf.mapper.WantedMapper;
+import com.xxf.mapper.WantedVOMapper;
 import com.xxf.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,10 +22,13 @@ public class UserServiceImpl implements UserService {
 
     private WantedMapper wantedMapper;
 
+    private WantedVOMapper wantedVOMapper;
+
     @Autowired
-    public UserServiceImpl(UserMapper userMapper, WantedMapper wantedMapper) {
+    public UserServiceImpl(UserMapper userMapper, WantedMapper wantedMapper, WantedVOMapper wantedVOMapper) {
         this.userMapper = userMapper;
         this.wantedMapper = wantedMapper;
+        this.wantedVOMapper = wantedVOMapper;
     }
 
     @Override
@@ -49,26 +54,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<Wanted> getAllWantedByUserId(int id) {
-        List<Integer> records = userMapper.selectFromRecord(id);
-        return records.stream().map(wantedId -> wantedMapper.selectOne(wantedId))
-                .collect(Collectors.toList());
+    public List<WantedVO> getAllWantedByUserId(int id) {
+        return wantedVOMapper.selectWantedVOByUserId(id, null);
     }
 
     @Override
-    public List<Wanted> getAllUntakedByUserId(int id) {
-        List<Integer> records = userMapper.selectFromRecord(id);
-        return records.stream().map(wantedId -> wantedMapper.selectOne(wantedId))
-                .filter(wanted -> wanted.getTaked() == 0)
-                .collect(Collectors.toList());
+    public List<WantedVO> getAllUntakedByUserId(int id) {
+        return wantedVOMapper.selectWantedVOByUserId(id, 0);
     }
 
     @Override
-    public List<Wanted> getAllTakedByUserId(int id) {
-        List<Integer> records = userMapper.selectFromRecord(id);
-        return records.stream().map(wantedId -> wantedMapper.selectOne(wantedId))
-                .filter(wanted -> wanted.getTaked() == 1)
-                .collect(Collectors.toList());
+    public List<WantedVO> getAllTakedByUserId(int id) {
+        return wantedVOMapper.selectWantedVOByUserId(id, 1);
     }
 
     @Override
