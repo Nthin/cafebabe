@@ -64,7 +64,7 @@ public class UserController {
     @EnablePaging
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/{id}/wanted")
-    public Result getAllWanted(@PathVariable("id") int id, @QueryParam("pageNo") Integer pageNo, @QueryParam("pageSize") Integer pageSize) {
+    public Result getAllWanted(@PathVariable("id") int id, @QueryParam("pageNum") Integer pageNum, @QueryParam("pageSize") Integer pageSize) {
         List<WantedVO> wantedVOList = userService.getAllWantedByUserId(id);
         return new Result(wantedVOList);
     }
@@ -78,7 +78,7 @@ public class UserController {
     @EnablePaging
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/{id}/untaked")
-    public Result getAllUntaked(@PathVariable("id") int id, @QueryParam("pageNo") Integer pageNo, @QueryParam("pageSize") Integer pageSize) {
+    public Result getAllUntaked(@PathVariable("id") int id, @QueryParam("pageNum") Integer pageNum, @QueryParam("pageSize") Integer pageSize) {
         List<WantedVO> wantedList = userService.getAllUntakedByUserId(id);
         return new Result(wantedList);
     }
@@ -92,7 +92,7 @@ public class UserController {
     @EnablePaging
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/{id}/taked")
-    public Result getAllTaked(@PathVariable("id") int id, @QueryParam("pageNo") Integer pageNo, @QueryParam("pageSize") Integer pageSize) {
+    public Result getAllTaked(@PathVariable("id") int id, @QueryParam("pageNum") Integer pageNum, @QueryParam("pageSize") Integer pageSize) {
         List<WantedVO> wantedList = userService.getAllTakedByUserId(id);
         return new Result(wantedList);
     }
