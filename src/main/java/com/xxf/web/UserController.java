@@ -7,6 +7,7 @@ import com.xxf.entity.Wanted;
 import com.xxf.entity.WantedVO;
 import com.xxf.service.UserService;
 import com.xxf.service.WantedService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ import javax.ws.rs.QueryParam;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -108,6 +110,7 @@ public class UserController {
     @PostMapping(value = "/{id}")
     public Result addNewWanted(@PathVariable("id") int id, @RequestBody Wanted wanted) {
         wantedService.addNewWanted(id, wanted);
+        log.info("new wanted, userId = {}, wanted : {}", id, wanted);
         return new Result(HttpStatus.CREATED.value());
     }
 
@@ -136,6 +139,7 @@ public class UserController {
     @PostMapping(value = "/{id}/complete")
     public Result completeUserInfo(@PathVariable("id") int id, @RequestBody Map<String, String> body) {
         userService.updateUser(id, body.get("position"), body.get("phone"));
+        log.info("userInfo complete, userId = {}, body = {}", id, body);
         return new Result(HttpStatus.CREATED.value());
     }
 }

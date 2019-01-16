@@ -6,6 +6,7 @@ import com.xxf.entity.DetailVO;
 import com.xxf.entity.Result;
 import com.xxf.entity.WantedVO;
 import com.xxf.service.WantedService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @RestController
 @RequestMapping("/wanted")
 public class WantedController {
@@ -101,6 +103,7 @@ public class WantedController {
             throw new CafeException(HttpStatus.METHOD_NOT_ALLOWED.value(), "Query Param is Empty");
         }
         wantedService.changeWantedStatus(id, 1, Integer.parseInt(takedUserId));
+        log.info("taked id = {}, takedUserId = {}", id, takedUserId);
         return new Result(HttpStatus.CREATED.value());
     }
 }
