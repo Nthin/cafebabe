@@ -5,7 +5,7 @@ import org.apache.ibatis.annotations.Select;
 
 public interface AuthMapper {
 
-    @Select({"select * from auth"})
+    @Select({"select a.app_id, a.app_secret from auth a"})
     AuthCode select();
 
 }

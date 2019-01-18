@@ -1,31 +1,53 @@
 package com.xxf.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import com.xxf.client.AuthClient;
 import com.xxf.entity.CafeException;
-import com.xxf.entity.auth.AuthCode;
-import com.xxf.entity.auth.AuthResponse;
+import com.xxf.entity.auth.*;
 import com.xxf.mapper.AuthMapper;
 import com.xxf.mapper.UserMapper;
 import com.xxf.service.AuthService;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @Slf4j
 public class AuthServiceImpl implements AuthService {
 
-    private static final String GRANT_TYPE = "authorization_code";
+    private static final String GRANT_TYPE_AUTH = "authorization_code";
+    private static final String GRANT_TYPE_ACCESS_TOKEN = "client_credential";
     private static final String AUTH_URL = "https://api.weixin.qq.com/sns/";
+    private static final String ACCESS_TOKEN_URL = "https://api.weixin.qq.com/cgi-bin/";
+    private static final int DEFAULT_EXPIRE_TIME = 7000;
+
+    private static String appId;
+    private static String secret;
+
+    private static Cache<String, String> tokenCache = CacheBuilder
+            .newBuilder()
+            .expireAfterWrite(DEFAULT_EXPIRE_TIME, TimeUnit.SECONDS)
+            .maximumSize(1)
+            .build();
 
     private AuthMapper authMapper;
-
     private UserMapper userMapper;
 
     @Autowired
@@ -34,18 +56,50 @@ public class AuthServiceImpl implements AuthService {
         this.userMapper = userMapper;
     }
 
+    @PostConstruct
+    private void getAuthCode() {
+        AuthCode authCode = authMapper.select();
+        appId = authCode.getAppId();
+        secret = authCode.getAppSecret();
+    }
+
     @Override
     public AuthResponse login(String code) {
         AuthResponse resp = getAuthResp(code);
-        if (resp.getOpenId() == null) {
-            throw new CafeException("getAuthResp fail, openId is null");
+        if (StringUtils.isBlank(resp.getOpenId())) {
+            throw new CafeException("login fail, openId is empty");
         }
 //        newUserIfNotExist(resp.getOpenId());
         return resp;
     }
 
+    @Override
+    public void sendUniformMsg(String openId, String formId, Map<String, String> params) {
+        try {
+            String token = tokenCache.get("token", AuthServiceImpl::getAccessToken);
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(ACCESS_TOKEN_URL)
+                    .addConverterFactory(JacksonConverterFactory.create())
+                    .build();
+            AuthClient authClient = retrofit.create(AuthClient.class);
+            String data = formatData(params);
+            WeAppTemplateMsg weAppTemplateMsg = new WeAppTemplateMsg();
+            weAppTemplateMsg.setFormId(formId);
+            weAppTemplateMsg.setData(data);
+            TemplateMsg templateMsg = new TemplateMsg(openId, weAppTemplateMsg);
+            UniformMsgResponse resp = authClient.sendUniformMsg(token, templateMsg).execute().body();
+            if (resp == null) {
+                throw new CafeException("sendUniformMsg fail, resp is null");
+            }
+            if (resp.getErrCode() != 0) {
+                throw new CafeException(resp.getErrCode(), resp.getErrMsg());
+            }
+        } catch (Exception e) {
+            throw new CafeException(e);
+        }
+    }
+
     private AuthResponse getAuthResp(String code) {
-        AuthCode authCode = authMapper.select();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(AUTH_URL)
                 .addConverterFactory(JacksonConverterFactory.create())
@@ -53,7 +107,7 @@ public class AuthServiceImpl implements AuthService {
         AuthClient authClient = retrofit.create(AuthClient.class);
         AuthResponse resp;
         try {
-            resp = authClient.getResponse(authCode.getAppId(), authCode.getAppSecret(), code, GRANT_TYPE).execute().body();
+            resp = authClient.getAuthResponse(appId, secret, code, GRANT_TYPE_AUTH).execute().body();
             if (resp == null) {
                 throw new CafeException("getAuthResp fail, resp is null");
             }
@@ -64,6 +118,48 @@ public class AuthServiceImpl implements AuthService {
             throw new CafeException(e);
         }
         return resp;
+    }
+
+    private static String getAccessToken() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(ACCESS_TOKEN_URL)
+                .addConverterFactory(JacksonConverterFactory.create())
+                .build();
+        AuthClient authClient = retrofit.create(AuthClient.class);
+        AccessResponse resp;
+        try {
+            resp = authClient.getAccessResponse(appId, secret, GRANT_TYPE_ACCESS_TOKEN).execute().body();
+            if (resp == null) {
+                throw new CafeException("AccessResponse fail, resp is null");
+            }
+            if (resp.getErrCode() != 0) {
+                throw new CafeException(resp.getErrCode(), resp.getErrMsg());
+            }
+        } catch (IOException e) {
+            throw new CafeException(e);
+        }
+        String token = resp.getAccessToken();
+        if (StringUtils.isBlank(token)) {
+            throw new CafeException("access fail, token is empty");
+        }
+        return token;
+    }
+
+    private String formatData(Map<String, String> params) throws JsonProcessingException {
+        Map<String, String> dataMap = new LinkedHashMap<>();
+        String brand = params.get("brand");
+        String size = params.get("size");
+        String price = params.get("price");
+        String nickname = params.get("nickname");
+        DateFormat df = new SimpleDateFormat("MM-dd HH:mm:ss");
+        String time = df.format(new Date());
+        dataMap.put("keyword1", brand + "拼单");
+        dataMap.put("keyword2", brand + " " + size + "杯");
+        dataMap.put("keyword3", price + "元");
+        dataMap.put("keyword4", nickname);
+        dataMap.put("keyword5", time);
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.writeValueAsString(dataMap);
     }
 
     private void newUserIfNotExist(@NonNull String openId) {

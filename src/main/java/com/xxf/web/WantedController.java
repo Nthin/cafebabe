@@ -5,6 +5,7 @@ import com.xxf.entity.CafeException;
 import com.xxf.entity.DetailVO;
 import com.xxf.entity.Result;
 import com.xxf.entity.WantedVO;
+import com.xxf.service.AuthService;
 import com.xxf.service.WantedService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -24,9 +25,12 @@ public class WantedController {
 
     private WantedService wantedService;
 
+    private AuthService authService;
+
     @Autowired
-    public WantedController(WantedService wantedService) {
+    public WantedController(WantedService wantedService, AuthService authService) {
         this.wantedService = wantedService;
+        this.authService = authService;
     }
 
     /**
@@ -104,6 +108,10 @@ public class WantedController {
         }
         wantedService.changeWantedStatus(id, 1, Integer.parseInt(takedUserId));
         log.info("taked id = {}, takedUserId = {}", id, takedUserId);
+        DetailVO detail = wantedService.getDetail(id);
+        String openId = detail.getUser().getOpenId();
+        String formId = detail.getWanted().getFormId();
+        authService.sendUniformMsg(openId, formId, body);
         return new Result(HttpStatus.CREATED.value());
     }
 }

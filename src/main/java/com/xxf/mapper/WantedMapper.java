@@ -14,7 +14,7 @@ public interface WantedMapper {
     @Select({"select * from wanted w where w.id = #{id}"})
     Wanted selectOne(@Param("id") int id);
 
-    @Insert({"insert into wanted(brand, size, taste, end_time, price_low, price_high, address, address_detail, latitude, longitude) values(#{brand}, #{size}, #{taste}, #{endTime}, #{priceLow}, #{priceHigh}, #{address}, #{addressDetail}, #{latitude}, #{longitude})"})
+    @Insert({"insert into wanted(brand, size, taste, end_time, price_low, price_high, address, address_detail, latitude, longitude, form_id) values(#{brand}, #{size}, #{taste}, #{endTime}, #{priceLow}, #{priceHigh}, #{address}, #{addressDetail}, #{latitude}, #{longitude}, #{formId})"})
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     int insert(Wanted wanted);
 

@@ -33,4 +33,6 @@ public class Wanted {
 
     private int taked;
 
+    private String formId;
+
 }
