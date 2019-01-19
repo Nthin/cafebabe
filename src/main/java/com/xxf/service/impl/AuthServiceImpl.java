@@ -82,10 +82,7 @@ public class AuthServiceImpl implements AuthService {
                     .addConverterFactory(JacksonConverterFactory.create())
                     .build();
             AuthClient authClient = retrofit.create(AuthClient.class);
-            String data = formatData(params);
-            WeAppTemplateMsg weAppTemplateMsg = new WeAppTemplateMsg();
-            weAppTemplateMsg.setFormId(formId);
-            weAppTemplateMsg.setData(data);
+            WeAppTemplateMsg weAppTemplateMsg = new WeAppTemplateMsg(formId, formatData(params));
             TemplateMsg templateMsg = new TemplateMsg(openId, weAppTemplateMsg);
             ObjectMapper mapper = new ObjectMapper();
             log.info("templateMsg : {}", mapper.writeValueAsString(templateMsg));
@@ -148,7 +145,7 @@ public class AuthServiceImpl implements AuthService {
         return token;
     }
 
-    private String formatData(Map<String, String> params) throws JsonProcessingException {
+    private Map<String, String> formatData(Map<String, String> params) throws JsonProcessingException {
         Map<String, String> dataMap = new LinkedHashMap<>();
         String brand = params.get("brand");
         String size = params.get("size");
@@ -161,10 +158,7 @@ public class AuthServiceImpl implements AuthService {
         dataMap.put("keyword3", price + "元");
         dataMap.put("keyword4", nickname);
         dataMap.put("keyword5", time);
-        ObjectMapper mapper = new ObjectMapper();
-        String data = mapper.writeValueAsString(dataMap);
-        log.info("formatData data : {}", data);
-        return data;
+        return dataMap;
     }
 
     private void newUserIfNotExist(@NonNull String openId) {

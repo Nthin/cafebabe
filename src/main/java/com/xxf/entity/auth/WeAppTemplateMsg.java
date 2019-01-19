@@ -2,8 +2,15 @@ package com.xxf.entity.auth;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+
+import java.util.Map;
 
 @Data
+@RequiredArgsConstructor
+@NoArgsConstructor
 public class WeAppTemplateMsg {
 
     private static final String TEMP_ID = "tudVOL-g2H8Hp49p-ruw24SkQbiEHmlqJjBkCZAXvqU";
@@ -16,11 +23,13 @@ public class WeAppTemplateMsg {
     @JsonProperty("page")
     private String page = PAGE;
 
+    @NonNull
     @JsonProperty("form_id")
     private String formId;
 
+    @NonNull
     @JsonProperty("data")
-    private String data;
+    private Map<String, String> data;
 
     @JsonProperty("emphasis_keyword")
     private String keyword = KEYWORD;
