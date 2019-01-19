@@ -29,7 +29,7 @@ public class WeAppTemplateMsg {
 
     @NonNull
     @JsonProperty("data")
-    private Map<String, String> data;
+    private Map<String, Map<String, String>> data;
 
     @JsonProperty("emphasis_keyword")
     private String keyword = KEYWORD;

@@ -145,19 +145,26 @@ public class AuthServiceImpl implements AuthService {
         return token;
     }
 
-    private Map<String, String> formatData(Map<String, String> params) throws JsonProcessingException {
-        Map<String, String> dataMap = new LinkedHashMap<>();
+    private Map<String, Map<String, String>> formatData(Map<String, String> params) throws JsonProcessingException {
+        Map<String, Map<String, String>> dataMap = new LinkedHashMap<>();
         String brand = params.get("brand");
         String size = params.get("size");
         String price = params.get("price");
         String nickname = params.get("nickname");
         DateFormat df = new SimpleDateFormat("MM-dd HH:mm:ss");
         String time = df.format(new Date());
-        dataMap.put("keyword1", brand + "拼单");
-        dataMap.put("keyword2", brand + " " + size + "杯");
-        dataMap.put("keyword3", price + "元");
-        dataMap.put("keyword4", nickname);
-        dataMap.put("keyword5", time);
+
+        Map<String, String> map = new LinkedHashMap<>();
+        map.put("value", brand + "拼单");
+        dataMap.put("keyword1", map);
+        map.put("value", brand + " " + size + "杯");
+        dataMap.put("keyword2", map);
+        map.put("value", price + "元");
+        dataMap.put("keyword3", map);
+        map.put("value", nickname);
+        dataMap.put("keyword4", map);
+        map.put("value", time);
+        dataMap.put("keyword5", map);
         return dataMap;
     }
 
