@@ -87,7 +87,10 @@ public class AuthServiceImpl implements AuthService {
             weAppTemplateMsg.setFormId(formId);
             weAppTemplateMsg.setData(data);
             TemplateMsg templateMsg = new TemplateMsg(openId, weAppTemplateMsg);
+            ObjectMapper mapper = new ObjectMapper();
+            log.info("templateMsg : {}", mapper.writeValueAsString(templateMsg));
             UniformMsgResponse resp = authClient.sendUniformMsg(token, templateMsg).execute().body();
+            log.info("resp : {}", resp);
             if (resp == null) {
                 throw new CafeException("sendUniformMsg fail, resp is null");
             }
@@ -159,7 +162,9 @@ public class AuthServiceImpl implements AuthService {
         dataMap.put("keyword4", nickname);
         dataMap.put("keyword5", time);
         ObjectMapper mapper = new ObjectMapper();
-        return mapper.writeValueAsString(dataMap);
+        String data = mapper.writeValueAsString(dataMap);
+        log.info("formatData data : {}", data);
+        return data;
     }
 
     private void newUserIfNotExist(@NonNull String openId) {
