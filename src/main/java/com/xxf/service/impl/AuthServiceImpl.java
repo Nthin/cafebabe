@@ -155,17 +155,21 @@ public class AuthServiceImpl implements AuthService {
         String time = df.format(new Date());
 
         Map<String, String> map = new LinkedHashMap<>();
-        map.put("value", brand + "拼单");
+        map.put("value", brand + "咖啡");
         dataMap.put("keyword1", map);
+
         Map<String, String> map2 = new LinkedHashMap<>();
-        map2.put("value", brand + " " + size + "杯");
+        map2.put("value", price + "元");
         dataMap.put("keyword2", map2);
+
         Map<String, String> map3 = new LinkedHashMap<>();
-        map3.put("value", price + "元");
+        map3.put("value", size + "杯");
         dataMap.put("keyword3", map3);
+
         Map<String, String> map4 = new LinkedHashMap<>();
         map4.put("value", nickname);
         dataMap.put("keyword4", map4);
+
         Map<String, String> map5 = new LinkedHashMap<>();
         map5.put("value", time);
         dataMap.put("keyword5", map5);
