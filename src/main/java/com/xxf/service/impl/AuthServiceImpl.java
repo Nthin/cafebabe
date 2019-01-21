@@ -1,7 +1,5 @@
 package com.xxf.service.impl;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.xxf.client.AuthClient;
@@ -12,8 +10,6 @@ import com.xxf.mapper.UserMapper;
 import com.xxf.service.AuthService;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,20 +72,13 @@ public class AuthServiceImpl implements AuthService {
     public void sendUniformMsg(String openId, String formId, Map<String, String> params) {
         try {
             String token = tokenCache.get("token", AuthServiceImpl::getAccessToken);
-            HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor();
-            logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-            OkHttpClient.Builder client = new OkHttpClient.Builder()
-                    .addInterceptor(logInterceptor);
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(ACCESS_TOKEN_URL)
-                    .client(client.build())
                     .addConverterFactory(JacksonConverterFactory.create())
                     .build();
             AuthClient authClient = retrofit.create(AuthClient.class);
             WeAppTemplateMsg weAppTemplateMsg = new WeAppTemplateMsg(formId, formatData(params));
             TemplateMsg templateMsg = new TemplateMsg(openId, weAppTemplateMsg);
-            ObjectMapper mapper = new ObjectMapper().disable(JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS);
-            log.info("templateMsg : {}", mapper.writeValueAsString(templateMsg));
             UniformMsgResponse resp = authClient.sendUniformMsg(token, templateMsg).execute().body();
             log.info("resp : {}", resp);
             if (resp == null) {

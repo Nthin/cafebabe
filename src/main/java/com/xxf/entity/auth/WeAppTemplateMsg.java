@@ -1,6 +1,7 @@
 package com.xxf.entity.auth;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonRawValue;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -26,6 +27,7 @@ public class WeAppTemplateMsg {
     private String formId;
 
     @NonNull
+    @JsonRawValue
     @JsonProperty("data")
     private String data;
 
