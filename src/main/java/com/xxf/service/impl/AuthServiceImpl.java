@@ -1,6 +1,6 @@
 package com.xxf.service.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -12,6 +12,8 @@ import com.xxf.mapper.UserMapper;
 import com.xxf.service.AuthService;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +23,8 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -69,7 +69,6 @@ public class AuthServiceImpl implements AuthService {
         if (StringUtils.isBlank(resp.getOpenId())) {
             throw new CafeException("login fail, openId is empty");
         }
-//        newUserIfNotExist(resp.getOpenId());
         return resp;
     }
 
@@ -77,14 +76,19 @@ public class AuthServiceImpl implements AuthService {
     public void sendUniformMsg(String openId, String formId, Map<String, String> params) {
         try {
             String token = tokenCache.get("token", AuthServiceImpl::getAccessToken);
+            HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor();
+            logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+            OkHttpClient.Builder client = new OkHttpClient.Builder()
+                    .addInterceptor(logInterceptor);
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(ACCESS_TOKEN_URL)
+                    .client(client.build())
                     .addConverterFactory(JacksonConverterFactory.create())
                     .build();
             AuthClient authClient = retrofit.create(AuthClient.class);
             WeAppTemplateMsg weAppTemplateMsg = new WeAppTemplateMsg(formId, formatData(params));
             TemplateMsg templateMsg = new TemplateMsg(openId, weAppTemplateMsg);
-            ObjectMapper mapper = new ObjectMapper();
+            ObjectMapper mapper = new ObjectMapper().disable(JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS);
             log.info("templateMsg : {}", mapper.writeValueAsString(templateMsg));
             UniformMsgResponse resp = authClient.sendUniformMsg(token, templateMsg).execute().body();
             log.info("resp : {}", resp);
@@ -145,35 +149,24 @@ public class AuthServiceImpl implements AuthService {
         return token;
     }
 
-    private Map<String, Map<String, String>> formatData(Map<String, String> params) throws JsonProcessingException {
-        Map<String, Map<String, String>> dataMap = new LinkedHashMap<>();
-        String brand = params.get("brand");
-        String size = params.get("size");
-        String price = params.get("price");
+    private String formatData(Map<String, String> params) {
+        String brand = params.get("brand") + "咖啡";
+        String price = params.get("price") + "元";
+        String size = params.get("size")  + "杯";
         String nickname = params.get("nickname");
-        DateFormat df = new SimpleDateFormat("MM-dd HH:mm:ss");
-        String time = df.format(new Date());
+        String time = new SimpleDateFormat("MM-dd HH:mm:ss").format(new Date());
 
-        Map<String, String> map = new LinkedHashMap<>();
-        map.put("value", brand + "咖啡");
-        dataMap.put("keyword1", map);
-
-        Map<String, String> map2 = new LinkedHashMap<>();
-        map2.put("value", price + "元");
-        dataMap.put("keyword2", map2);
-
-        Map<String, String> map3 = new LinkedHashMap<>();
-        map3.put("value", size + "杯");
-        dataMap.put("keyword3", map3);
-
-        Map<String, String> map4 = new LinkedHashMap<>();
-        map4.put("value", nickname);
-        dataMap.put("keyword4", map4);
-
-        Map<String, String> map5 = new LinkedHashMap<>();
-        map5.put("value", time);
-        dataMap.put("keyword5", map5);
-        return dataMap;
+        StringBuilder sb = new StringBuilder("{\"keyword1\": {\"value\": \"");
+        try {
+            sb.append(brand).append("\"},\"keyword2\": {\"value\": \"")
+                    .append(price).append("\"},\"keyword3\": {\"value\": \"")
+                    .append(size).append("\"},\"keyword4\": {\"value\": \"")
+                    .append(nickname).append("\"},\"keyword5\": {\"value\": \"")
+                    .append(time).append("\"}}");
+            return sb.toString();
+        } finally {
+            sb.delete(0, sb.length());
+        }
     }
 
     private void newUserIfNotExist(@NonNull String openId) {

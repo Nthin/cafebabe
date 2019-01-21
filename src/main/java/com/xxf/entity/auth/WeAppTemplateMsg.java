@@ -6,8 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Map;
-
 @Data
 @RequiredArgsConstructor
 @NoArgsConstructor
@@ -29,7 +27,7 @@ public class WeAppTemplateMsg {
 
     @NonNull
     @JsonProperty("data")
-    private Map<String, Map<String, String>> data;
+    private String data;
 
     @JsonProperty("emphasis_keyword")
     private String keyword = KEYWORD;
