@@ -111,7 +111,7 @@ public class WantedController {
         DetailVO detail = wantedService.getDetail(id);
         String openId = detail.getUser().getOpenId();
         String formId = detail.getWanted().getFormId();
-        authService.sendUniformMsg(openId, formId, body);
+        authService.sendUniformMsg(openId, formId, id, body);
         return new Result(HttpStatus.CREATED.value());
     }
 }

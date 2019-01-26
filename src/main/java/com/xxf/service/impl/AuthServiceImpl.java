@@ -69,7 +69,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public void sendUniformMsg(String openId, String formId, Map<String, String> params) {
+    public void sendUniformMsg(String openId, String formId, int wantedId, Map<String, String> params) {
         try {
             String token = tokenCache.get("token", AuthServiceImpl::getAccessToken);
             Retrofit retrofit = new Retrofit.Builder()
@@ -78,6 +78,7 @@ public class AuthServiceImpl implements AuthService {
                     .build();
             AuthClient authClient = retrofit.create(AuthClient.class);
             WeAppTemplateMsg weAppTemplateMsg = new WeAppTemplateMsg(formId, formatData(params));
+            weAppTemplateMsg.setPage(wantedId);
             TemplateMsg templateMsg = new TemplateMsg(openId, weAppTemplateMsg);
             UniformMsgResponse resp = authClient.sendUniformMsg(token, templateMsg).execute().body();
             log.info("resp : {}", resp);

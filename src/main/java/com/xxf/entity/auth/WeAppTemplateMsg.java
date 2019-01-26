@@ -13,14 +13,14 @@ import lombok.RequiredArgsConstructor;
 public class WeAppTemplateMsg {
 
     private static final String TEMP_ID = "tudVOL-g2H8Hp49p-ruw2-CB_XDbHARGw9-H2X8NH-8";
-    private static final String PAGE = "detail/detail";
+    private static final String PAGE_PREFIX = "detail?from=my&id=";
     private static final String KEYWORD = "keyword1.DATA";
 
     @JsonProperty("template_id")
     private String tempId = TEMP_ID;
 
     @JsonProperty("page")
-    private String page = PAGE;
+    private String page;
 
     @NonNull
     @JsonProperty("form_id")
@@ -33,5 +33,9 @@ public class WeAppTemplateMsg {
 
     @JsonProperty("emphasis_keyword")
     private String keyword = KEYWORD;
+
+    public void setPage(int wantedId) {
+        this.page = PAGE_PREFIX + wantedId;
+    }
 
 }

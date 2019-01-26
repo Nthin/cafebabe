@@ -14,6 +14,6 @@ public interface AuthService {
      */
     AuthResponse login(String code);
 
-    void sendUniformMsg(String openId, String formId, Map<String, String> params);
+    void sendUniformMsg(String openId, String formId, int wantedId, Map<String, String> params);
 
 }
