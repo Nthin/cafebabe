@@ -80,6 +80,7 @@ public class AuthServiceImpl implements AuthService {
             WeAppTemplateMsg weAppTemplateMsg = new WeAppTemplateMsg(formId, formatData(params));
             weAppTemplateMsg.setPage(wantedId);
             TemplateMsg templateMsg = new TemplateMsg(openId, weAppTemplateMsg);
+            log.info("req : {}", weAppTemplateMsg);
             UniformMsgResponse resp = authClient.sendUniformMsg(token, templateMsg).execute().body();
             log.info("resp : {}", resp);
             if (resp == null) {
@@ -142,7 +143,7 @@ public class AuthServiceImpl implements AuthService {
     private String formatData(Map<String, String> params) {
         String brand = params.get("brand") + "咖啡";
         String price = params.get("price") + "元";
-        String size = params.get("size")  + "杯";
+        String size = params.get("size") + "杯";
         String nickname = params.get("nickname");
         String time = new SimpleDateFormat("MM-dd HH:mm:ss").format(new Date());
 
