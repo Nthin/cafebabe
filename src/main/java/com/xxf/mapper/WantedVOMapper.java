@@ -22,9 +22,16 @@ public interface WantedVOMapper {
 
     @Select({"<script> SELECT w.id, w.brand, w.address, u.nickname, w.price_high, w.end_time, w.latitude, w.longitude, w.size, w.taste, r.add_time, r.taked_time " +
             "FROM wanted w LEFT JOIN record r ON w.id = r.wanted_id LEFT JOIN user u ON r.add_user_id = u.id " +
-            "WHERE u.id = #{id} " +
+            "WHERE r.add_user_id = #{userId} " +
             "<if test='takedStatus != null'>AND w.taked = #{takedStatus} </if>" +
             "ORDER BY r.add_time DESC</script>"})
-    List<WantedVO> selectWantedVOByUserId(@Param("id") int id, @Param("takedStatus") Integer takedStatus);
+    List<WantedVO> selectWantedVOByUserId(@Param("userId") int userId, @Param("takedStatus") Integer takedStatus);
+
+    @Select({"SELECT w.id, w.brand, w.address, u.nickname, w.price_high, w.end_time, w.latitude, w.longitude, w.size, w.taste, r.add_time, r.taked_time " +
+            "FROM wanted w LEFT JOIN record r ON w.id = r.wanted_id LEFT JOIN user u ON r.add_user_id = u.id " +
+            "WHERE w.taked = 1 " +
+            "AND r.taked_user_id = #{userId} " +
+            "ORDER BY r.taked_time DESC"})
+    List<WantedVO> selectTakedByUserId(@Param("userId") int userId);
 
 }

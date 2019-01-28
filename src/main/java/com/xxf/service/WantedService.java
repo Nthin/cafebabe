@@ -47,4 +47,12 @@ public interface WantedService {
      * @param takedUserId
      */
     void changeWantedStatus(int wantedId, int taked, int takedUserId);
+
+    /**
+     * 按takedUserId查所有taked记录
+     *
+     * @param takedUserId
+     * @return
+     */
+    List<WantedVO> listAllTaked(int takedUserId);
 }

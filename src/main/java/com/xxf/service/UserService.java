@@ -1,7 +1,6 @@
 package com.xxf.service;
 
 import com.xxf.entity.User;
-import com.xxf.entity.Wanted;
 import com.xxf.entity.WantedVO;
 
 import java.util.List;

@@ -78,4 +78,9 @@ public class WantedServiceImpl implements WantedService {
             throw new CafeException("update record fail, id : " + wantedId);
         }
     }
+
+    @Override
+    public List<WantedVO> listAllTaked(int takedUserId) {
+        return wantedVOMapper.selectTakedByUserId(takedUserId);
+    }
 }

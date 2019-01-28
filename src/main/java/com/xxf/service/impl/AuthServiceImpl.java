@@ -8,9 +8,7 @@ import com.xxf.entity.auth.*;
 import com.xxf.mapper.AuthMapper;
 import com.xxf.mapper.UserMapper;
 import com.xxf.service.AuthService;
-import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,13 +50,6 @@ public class AuthServiceImpl implements AuthService {
         this.userMapper = userMapper;
     }
 
-    @PostConstruct
-    private void getAuthCode() {
-        AuthCode authCode = authMapper.select();
-        appId = authCode.getAppId();
-        secret = authCode.getAppSecret();
-    }
-
     @Override
     public AuthResponse login(String code) {
         AuthResponse resp = getAuthResp(code);
@@ -94,25 +85,11 @@ public class AuthServiceImpl implements AuthService {
         }
     }
 
-    private AuthResponse getAuthResp(String code) {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(AUTH_URL)
-                .addConverterFactory(JacksonConverterFactory.create())
-                .build();
-        AuthClient authClient = retrofit.create(AuthClient.class);
-        AuthResponse resp;
-        try {
-            resp = authClient.getAuthResponse(appId, secret, code, GRANT_TYPE_AUTH).execute().body();
-            if (resp == null) {
-                throw new CafeException("getAuthResp fail, resp is null");
-            }
-            if (resp.getErrCode() != 0) {
-                throw new CafeException(resp.getErrCode(), resp.getErrMsg());
-            }
-        } catch (IOException e) {
-            throw new CafeException(e);
-        }
-        return resp;
+    @PostConstruct
+    private void getAuthCode() {
+        AuthCode authCode = authMapper.select();
+        appId = authCode.getAppId();
+        secret = authCode.getAppSecret();
     }
 
     private static String getAccessToken() {
@@ -140,6 +117,27 @@ public class AuthServiceImpl implements AuthService {
         return token;
     }
 
+    private AuthResponse getAuthResp(String code) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(AUTH_URL)
+                .addConverterFactory(JacksonConverterFactory.create())
+                .build();
+        AuthClient authClient = retrofit.create(AuthClient.class);
+        AuthResponse resp;
+        try {
+            resp = authClient.getAuthResponse(appId, secret, code, GRANT_TYPE_AUTH).execute().body();
+            if (resp == null) {
+                throw new CafeException("getAuthResp fail, resp is null");
+            }
+            if (resp.getErrCode() != 0) {
+                throw new CafeException(resp.getErrCode(), resp.getErrMsg());
+            }
+        } catch (IOException e) {
+            throw new CafeException(e);
+        }
+        return resp;
+    }
+
     private String formatData(Map<String, String> params) {
         String brand = params.get("brand") + "咖啡";
         String price = params.get("price") + "元";
@@ -158,22 +156,5 @@ public class AuthServiceImpl implements AuthService {
         } finally {
             sb.delete(0, sb.length());
         }
-    }
-
-    private void newUserIfNotExist(@NonNull String openId) {
-        if (userMapper.selectOne(openId) == null) {
-//            userMapper.insert(new User(openId));
-        }
-    }
-
-    private String generate3rdSession(String openId, String sessionKey) {
-        String thirdSessionKey = RandomStringUtils.randomAlphanumeric(64);
-        StringBuilder sb = new StringBuilder();
-        try {
-            sb.append(sessionKey).append("#").append(openId);
-        } finally {
-            sb.delete(0, sb.length());
-        }
-        return thirdSessionKey;
     }
 }

@@ -2,7 +2,6 @@ package com.xxf.service.impl;
 
 import com.xxf.entity.CafeException;
 import com.xxf.entity.User;
-import com.xxf.entity.Wanted;
 import com.xxf.entity.WantedVO;
 import com.xxf.mapper.UserMapper;
 import com.xxf.mapper.WantedMapper;
@@ -13,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {

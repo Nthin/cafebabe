@@ -81,6 +81,22 @@ public class WantedController {
     }
 
     /**
+     * 获取该用户taked的所有wanted
+     *
+     * @param userId
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @EnablePaging
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(value = "/taked/{userId}")
+    public Result listUntaked(@PathVariable("userId") int userId, @QueryParam("pageNum") Integer pageNum, @QueryParam("pageSize") Integer pageSize) {
+        List<WantedVO> wantedVOList = wantedService.listAllTaked(userId);
+        return new Result(wantedVOList);
+    }
+
+    /**
      * 获取wanted详情
      *
      * @param id
