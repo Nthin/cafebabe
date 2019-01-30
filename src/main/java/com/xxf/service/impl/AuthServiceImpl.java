@@ -6,7 +6,6 @@ import com.xxf.client.AuthClient;
 import com.xxf.entity.CafeException;
 import com.xxf.entity.auth.*;
 import com.xxf.mapper.AuthMapper;
-import com.xxf.mapper.UserMapper;
 import com.xxf.service.AuthService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -42,12 +41,10 @@ public class AuthServiceImpl implements AuthService {
             .build();
 
     private AuthMapper authMapper;
-    private UserMapper userMapper;
 
     @Autowired
-    public AuthServiceImpl(AuthMapper authMapper, UserMapper userMapper) {
+    public AuthServiceImpl(AuthMapper authMapper) {
         this.authMapper = authMapper;
-        this.userMapper = userMapper;
     }
 
     @Override
