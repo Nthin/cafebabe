@@ -63,7 +63,7 @@ public class EnablePagingHandler {
      * @throws Exception
      */
     private Map<String, Object> getFieldsName(Class cls, String methodName, Object[] args) {
-        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>(4);
         LocalVariableTableParameterNameDiscoverer discoverer = new LocalVariableTableParameterNameDiscoverer();
         Method[] methods = cls.getDeclaredMethods();
         for (Method method : methods) {
