@@ -139,7 +139,6 @@ public class UserController {
     @PostMapping(value = "/{id}/complete")
     public Result completeUserInfo(@PathVariable("id") int id, @RequestBody Map<String, String> body) {
         userService.updateUser(id, body.get("position"), body.get("phone"));
-        log.info("userInfo complete, userId = {}, body = {}", id, body);
         return new Result(HttpStatus.CREATED.value());
     }
 }
