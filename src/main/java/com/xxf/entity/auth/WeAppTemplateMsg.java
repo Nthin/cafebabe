@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 public class WeAppTemplateMsg {
 
     private static final String TEMP_ID = "tudVOL-g2H8Hp49p-ruw2-CB_XDbHARGw9-H2X8NH-8";
-    private static final String PAGE_PREFIX = "pages/detail/detail?from=my&id=";
+    private static final String PAGE_PREFIX = "pages/detail/detail?from=msg&id=";
     private static final String KEYWORD = "keyword1.DATA";
 
     @JsonProperty("template_id")
