@@ -37,7 +37,7 @@ public interface WantedService {
      * @param wanted
      * @return
      */
-    void addNewWanted(int userId, Wanted wanted);
+    int addNewWanted(int userId, Wanted wanted);
 
     /**
      * 下订单

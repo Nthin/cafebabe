@@ -109,9 +109,9 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value = "/{id}")
     public Result addNewWanted(@PathVariable("id") int id, @RequestBody Wanted wanted) {
-        wantedService.addNewWanted(id, wanted);
+        int wantedId = wantedService.addNewWanted(id, wanted);
         log.info("new wanted, userId = {}, wanted : {}", id, wanted);
-        return new Result(HttpStatus.CREATED.value());
+        return new Result(HttpStatus.CREATED.value(), wantedId);
     }
 
     /**

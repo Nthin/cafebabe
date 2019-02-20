@@ -56,7 +56,7 @@ public class WantedServiceImpl implements WantedService {
 
     @Transactional(rollbackFor = CafeException.class)
     @Override
-    public void addNewWanted(int userId, Wanted wanted) {
+    public int addNewWanted(int userId, Wanted wanted) {
         if (wantedMapper.insert(wanted) != 1) {
             throw new CafeException("insert into wanted fail, wanted : " + wanted + ", userId : " + userId);
         }
@@ -65,6 +65,7 @@ public class WantedServiceImpl implements WantedService {
         if (wantedMapper.insertRecord(wantedId, userId, addTime) != 1) {
             throw new CafeException("insert into record fail, wanted : " + wanted + ", userId : " + userId);
         }
+        return wantedId;
     }
 
     @Transactional(rollbackFor = CafeException.class)
