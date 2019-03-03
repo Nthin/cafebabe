@@ -5,7 +5,6 @@ import com.xxf.entity.CafeException;
 import com.xxf.entity.DetailVO;
 import com.xxf.entity.Result;
 import com.xxf.entity.WantedVO;
-import com.xxf.service.AuthService;
 import com.xxf.service.WantedService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -25,12 +24,9 @@ public class WantedController {
 
     private WantedService wantedService;
 
-    private AuthService authService;
-
     @Autowired
-    public WantedController(WantedService wantedService, AuthService authService) {
+    public WantedController(WantedService wantedService) {
         this.wantedService = wantedService;
-        this.authService = authService;
     }
 
     /**
@@ -118,17 +114,11 @@ public class WantedController {
     @ResponseStatus(HttpStatus.CREATED)
     @PutMapping(value = "/{id}")
     public Result takeWanted(@PathVariable("id") int id, @RequestBody Map<String, String> body) {
-        log.info("takeWanted id = {}, body = {}", id, body);
         String takedUserId = body.get("takedUserId");
         if (takedUserId == null) {
             throw new CafeException(HttpStatus.METHOD_NOT_ALLOWED.value(), "Query Param is Empty");
         }
-        wantedService.changeWantedStatus(id, 1, Integer.parseInt(takedUserId));
-        log.info("taked id = {}, takedUserId = {}", id, takedUserId);
-        DetailVO detail = wantedService.getDetail(id);
-        String openId = detail.getUser().getOpenId();
-        String formId = detail.getWanted().getFormId();
-        authService.sendUniformMsg(openId, formId, id, body);
+        wantedService.changeWantedStatus(id, 1, Integer.parseInt(takedUserId), body);
         return new Result(HttpStatus.CREATED.value());
     }
 }

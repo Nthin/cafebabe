@@ -4,7 +4,9 @@ import com.xxf.entity.*;
 import com.xxf.mapper.UserMapper;
 import com.xxf.mapper.WantedMapper;
 import com.xxf.mapper.WantedVOMapper;
+import com.xxf.service.AuthService;
 import com.xxf.service.WantedService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,8 +14,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 
 @Service
+@Slf4j
 public class WantedServiceImpl implements WantedService {
 
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -24,11 +28,14 @@ public class WantedServiceImpl implements WantedService {
 
     private UserMapper userMapper;
 
+    private AuthService authService;
+
     @Autowired
-    public WantedServiceImpl(WantedMapper wantedMapper, WantedVOMapper wantedVOMapper, UserMapper userMapper) {
+    public WantedServiceImpl(WantedMapper wantedMapper, WantedVOMapper wantedVOMapper, UserMapper userMapper, AuthService authService) {
         this.wantedMapper = wantedMapper;
         this.wantedVOMapper = wantedVOMapper;
         this.userMapper = userMapper;
+        this.authService = authService;
     }
 
     @Override
@@ -39,6 +46,11 @@ public class WantedServiceImpl implements WantedService {
     @Override
     public List<WantedVO> listAllUntaked(List<Integer> brands, Integer priceHigh) {
         return wantedVOMapper.selectUntakedByFilter(brands, priceHigh);
+    }
+
+    @Override
+    public List<WantedVO> listAllTaked(int takedUserId) {
+        return wantedVOMapper.selectTakedByUserId(takedUserId);
     }
 
     @Override
@@ -65,23 +77,28 @@ public class WantedServiceImpl implements WantedService {
         if (wantedMapper.insertRecord(wantedId, userId, addTime) != 1) {
             throw new CafeException("insert into record fail, wanted : " + wanted + ", userId : " + userId);
         }
+        log.info("addNewWanted() userId = {}, wanted = {}", userId, wanted);
         return wantedId;
     }
 
     @Transactional(rollbackFor = CafeException.class)
     @Override
-    public void changeWantedStatus(int wantedId, int taked, int takedUserId) {
+    public void changeWantedStatus(int wantedId, int taked, int takedUserId, Map<String, String> body) {
         if (wantedMapper.update(wantedId, taked) != 1) {
             throw new CafeException("change wanted status fail, wantedId : " + wantedId);
         }
         String takedTime = LocalDateTime.now().format(formatter);
         if (wantedMapper.updateRecord(wantedId, takedUserId, takedTime) != 1) {
-            throw new CafeException("update record fail, id : " + wantedId);
+            throw new CafeException("update record fail, wantedId : " + wantedId);
         }
-    }
-
-    @Override
-    public List<WantedVO> listAllTaked(int takedUserId) {
-        return wantedVOMapper.selectTakedByUserId(takedUserId);
+        try {
+            DetailVO detail = getDetail(wantedId);
+            String openId = detail.getUser().getOpenId();
+            String formId = detail.getWanted().getFormId();
+            authService.sendUniformMsg(openId, formId, wantedId, body);
+        } catch (Exception e) {
+            throw new CafeException("send uniform msg fail : " + e.getMessage());
+        }
+        log.info("changeWantedStatus() wantedId = {}, takedUserId = {}", wantedId, takedUserId);
     }
 }

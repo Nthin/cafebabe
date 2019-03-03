@@ -110,7 +110,6 @@ public class UserController {
     @PostMapping(value = "/{id}")
     public Result addNewWanted(@PathVariable("id") int id, @RequestBody Wanted wanted) {
         int wantedId = wantedService.addNewWanted(id, wanted);
-        log.info("new wanted, userId = {}, wanted : {}", id, wanted);
         return new Result(HttpStatus.CREATED.value(), wantedId);
     }
 

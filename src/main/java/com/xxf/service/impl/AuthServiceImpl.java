@@ -68,9 +68,7 @@ public class AuthServiceImpl implements AuthService {
             WeAppTemplateMsg weAppTemplateMsg = new WeAppTemplateMsg(formId, formatData(params));
             weAppTemplateMsg.setPage(wantedId);
             TemplateMsg templateMsg = new TemplateMsg(openId, weAppTemplateMsg);
-            log.info("req : {}", weAppTemplateMsg);
             UniformMsgResponse resp = authClient.sendUniformMsg(token, templateMsg).execute().body();
-            log.info("resp : {}", resp);
             if (resp == null) {
                 throw new CafeException("sendUniformMsg fail, resp is null");
             }
@@ -80,6 +78,7 @@ public class AuthServiceImpl implements AuthService {
         } catch (Exception e) {
             throw new CafeException(e);
         }
+        log.info("sendUniformMsg() wantedId = {}, params = {}", wantedId, params);
     }
 
     @PostConstruct
@@ -132,6 +131,7 @@ public class AuthServiceImpl implements AuthService {
         } catch (IOException e) {
             throw new CafeException(e);
         }
+        log.info("getAuthResp() resp = {}", resp);
         return resp;
     }
 

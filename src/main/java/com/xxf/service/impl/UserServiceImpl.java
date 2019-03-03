@@ -4,9 +4,9 @@ import com.xxf.entity.CafeException;
 import com.xxf.entity.User;
 import com.xxf.entity.WantedVO;
 import com.xxf.mapper.UserMapper;
-import com.xxf.mapper.WantedMapper;
 import com.xxf.mapper.WantedVOMapper;
 import com.xxf.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -14,18 +14,16 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@Slf4j
 public class UserServiceImpl implements UserService {
 
     private UserMapper userMapper;
 
-    private WantedMapper wantedMapper;
-
     private WantedVOMapper wantedVOMapper;
 
     @Autowired
-    public UserServiceImpl(UserMapper userMapper, WantedMapper wantedMapper, WantedVOMapper wantedVOMapper) {
+    public UserServiceImpl(UserMapper userMapper, WantedVOMapper wantedVOMapper) {
         this.userMapper = userMapper;
-        this.wantedMapper = wantedMapper;
         this.wantedVOMapper = wantedVOMapper;
     }
 
@@ -49,6 +47,7 @@ public class UserServiceImpl implements UserService {
         if (result != 1) {
             throw new CafeException("Failed to create new user : " + user);
         }
+        log.info("newUser(), user = {}", user);
     }
 
     @Override
@@ -72,5 +71,6 @@ public class UserServiceImpl implements UserService {
         if (result != 1) {
             throw new CafeException("Failed to update user : " + id);
         }
+        log.info("updateUser(), userId = {}, phone = {}", id, phone);
     }
 }
