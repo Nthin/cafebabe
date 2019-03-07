@@ -1,6 +1,7 @@
 package com.xxf.web;
 
 import com.xxf.entity.Result;
+import com.xxf.entity.auth.AuthResponse;
 import com.xxf.service.AuthService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,8 @@ public class AuthController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/{code}")
     public Result login(@PathVariable("code") String code) {
-        return new Result(authService.login(code));
+        AuthResponse resp = authService.login(code);
+        return new Result(resp);
     }
 
 }
