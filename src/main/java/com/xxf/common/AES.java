@@ -6,13 +6,16 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-import java.security.*;
+import java.security.AlgorithmParameters;
+import java.security.Key;
+import java.security.NoSuchAlgorithmException;
+import java.security.Security;
 import java.security.spec.InvalidParameterSpecException;
 
 @Slf4j
 public class AES {
 
-    public static boolean initialized = false;
+    private static boolean initialized = false;
 
     /**
      * AES解密
@@ -21,7 +24,6 @@ public class AES {
      * @param keyByte
      * @param ivByte
      * @return
-     * @throws InvalidAlgorithmParameterException
      */
     public byte[] decrypt(byte[] content, byte[] keyByte, byte[] ivByte) {
         initialize();
@@ -36,7 +38,7 @@ public class AES {
         return null;
     }
 
-    public static void initialize() {
+    private static void initialize() {
         if (initialized) {
             return;
         }
@@ -51,7 +53,7 @@ public class AES {
      * @return
      * @throws Exception
      */
-    public static AlgorithmParameters generateIV(byte[] iv) throws NoSuchAlgorithmException, InvalidParameterSpecException {
+    private static AlgorithmParameters generateIV(byte[] iv) throws NoSuchAlgorithmException, InvalidParameterSpecException {
         AlgorithmParameters params = AlgorithmParameters.getInstance("AES");
         params.init(new IvParameterSpec(iv));
         return params;

@@ -49,7 +49,7 @@ public class WxPKCS7Encoder {
      * @param a 需要转化的数字
      * @return 转化得到的字符
      */
-    public static char chr(int a) {
+    private static char chr(int a) {
         byte target = (byte) (a & 0xFF);
         return (char) target;
     }
