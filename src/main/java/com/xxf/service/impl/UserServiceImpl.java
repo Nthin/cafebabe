@@ -44,10 +44,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public void newUser(User user) {
         int result = userMapper.insert(user);
-        if (result != 1) {
-            throw new CafeException("Failed to create new user : " + user);
+        if (result == 1) {
+            log.info("new user = {}", user);
+            return;
         }
-        log.info("newUser(), user = {}", user);
+        if (result == 2) {
+            log.info("update user = {}", user);
+            return;
+        }
+        throw new CafeException("Failed to create new user : " + user);
     }
 
     @Override
