@@ -17,7 +17,7 @@ public class CafebabeAppInitializer extends AbstractAnnotationConfigDispatcherSe
     @Nullable
     @Override
     protected Class<?>[] getServletConfigClasses() {
-        return null;
+        return new Class<?>[]{DispatcherConfig.class};
     }
 
     @Override
